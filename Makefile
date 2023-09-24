@@ -36,6 +36,6 @@ l10n:
 migrate:
 	alembic revision \
 	  --autogenerate \
-	  --rev-id $(shell python migrations/_get_revision_id.py -p migrations/versions) \
+	  --rev-id $(shell python migrations/_get_revision_id.py) \
 	  --message $(message)
 
