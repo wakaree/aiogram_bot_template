@@ -1,0 +1,1 @@
+messages-start = Привіт, { $name }!

@@ -1,0 +1,55 @@
+[tool.black]
+line_length = 98
+exclude = "\\.?venv|\\.?tests"
+
+[tool.ruff]
+target-version = "py38"
+line-length = 99
+select = [
+    "C",
+    "DTZ",
+    "E",
+    "F",
+    "I",
+    "ICN",
+    "ISC",
+    "N",
+    "PLC",
+    "PLE",
+    "Q",
+    "S",
+    "T",
+    "W",
+    "YTT",
+]
+exclude = [
+    ".venv",
+    ".idea",
+    ".tests"
+]
+ignore = [
+    "S106",
+    "N818"
+]
+
+
+[tool.mypy]
+plugins = [
+    "sqlalchemy.ext.mypy.plugin",
+    "pydantic.mypy"
+]
+exclude = [
+    ".venv",
+    ".idea",
+    ".tests"
+]
+
+[[tool.mypy.overrides]]
+module = ["redis.*"]
+ignore_missing_imports = true
+disallow_untyped_defs = true
+
+[[tool.mypy.overrides]]
+module = ["bot.handlers.*"]
+strict_optional = false
+warn_return_any = false

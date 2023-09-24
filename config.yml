@@ -1,0 +1,10 @@
+
+api_token: 42:ABC
+dsn: postgresql+asyncpg://user:password@localhost:5432/db_name
+dev_id: 5945468457
+
+webhook:
+   base_url: https://example.com
+   path: /webhook
+   host: 127.0.0.1
+   port: 80
