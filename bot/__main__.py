@@ -1,4 +1,3 @@
-from functools import partial
 from typing import cast
 
 import click
@@ -7,7 +6,6 @@ from aiogram.webhook import aiohttp_server as server
 from aiohttp import web
 
 from utils import logger
-
 from .factory import create_bot, create_dispatcher
 from .settings import Settings
 
@@ -32,6 +30,11 @@ async def webhook_shutdown(bot: Bot, reset_webhook: bool) -> None:
             return loggers.webhook.error("Failed to drop main bot webhook.")
 
 
+async def drop_pending_updates(bot: Bot) -> None:
+    await bot.delete_webhook(drop_pending_updates=True)
+    loggers.dispatcher.info("Updates skipped successfully")
+
+
 @click.group("cli")
 def cli() -> None:
     logger.setup()
@@ -43,8 +46,7 @@ def run_polling(skip_updates: bool) -> None:
     dp = create_dispatcher()
     bot = create_bot(settings=cast(Settings, dp["settings"]))
     if skip_updates:
-        dp.startup.register(partial(bot.delete_webhook, drop_pending_updates=True))
-        dp.startup.register(lambda: loggers.dispatcher.info("Updates skipped successfully"))
+        dp.startup.register(drop_pending_updates)
     return dp.run_polling(bot)
 
 
