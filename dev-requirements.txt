@@ -1,0 +1,5 @@
+libcst~=1.0.1
+types-PyYAML~=6.0.12
+black~=23.9.1
+mypy~=1.5.1
+ruff~=0.0.291
