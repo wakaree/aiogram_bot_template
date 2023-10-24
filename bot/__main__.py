@@ -6,6 +6,7 @@ from aiogram.webhook import aiohttp_server as server
 from aiohttp import web
 
 from utils import logger
+
 from .factory import create_bot, create_dispatcher
 from .settings import Settings
 
@@ -30,8 +31,9 @@ async def webhook_shutdown(bot: Bot, reset_webhook: bool) -> None:
             return loggers.webhook.error("Failed to drop main bot webhook.")
 
 
-async def drop_pending_updates(bot: Bot) -> None:
-    await bot.delete_webhook(drop_pending_updates=True)
+async def drop_pending_updates(bots: list[Bot]) -> None:
+    for bot in bots:
+        await bot.delete_webhook(drop_pending_updates=True)
     loggers.dispatcher.info("Updates skipped successfully")
 
 
@@ -67,7 +69,7 @@ def run_webhook(reset_webhook: bool) -> None:
     server.setup_application(app, dp, bot=bot, reset_webhook=reset_webhook)
 
     return web.run_app(
-        app,
+        app=app,
         host=settings.webhook.host,
         port=settings.webhook.port,
         print=logger.MultilineLogger(),

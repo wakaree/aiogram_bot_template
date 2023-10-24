@@ -25,7 +25,11 @@ from .settings import Settings
 def create_dispatcher() -> Dispatcher:
     redis = Redis()
 
-    dp = Dispatcher(name="main_dispatcher", storage=RedisStorage(redis), redis=redis)
+    dp = Dispatcher(
+        name="main_dispatcher",
+        storage=RedisStorage(redis=redis, json_loads=mjson.decode, json_dumps=mjson.encode),
+        redis=redis,
+    )
     dp["settings"] = settings = Settings()
     dp.include_routers(admin.router, main.router, extra.router)
 
