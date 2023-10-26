@@ -25,7 +25,7 @@ class Repository:
         return await self.session.get(entity=DBUser, ident=pk)
 
     async def create_user(self, user: User) -> DBUser:
-        db_user = DBUser(
+        db_user = DBUser(  # type: ignore[call-arg]
             id=user.id, name=user.full_name, locale=Locale.resolve(user.language_code)
         )
         await self.save(db_user)

@@ -28,8 +28,6 @@ exclude = [
     ".tests"
 ]
 ignore = [
-    "S106",
-    "N818"
 ]
 
 
