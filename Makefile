@@ -32,8 +32,8 @@ l10n:
 
 
 # Make database migration
-.PHONY: migrate
-migrate:
+.PHONY: migration
+migration:
 	alembic revision \
 	  --autogenerate \
 	  --rev-id $(shell python migrations/_get_revision_id.py) \
