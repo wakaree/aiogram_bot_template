@@ -24,7 +24,7 @@ reformat:
 # Update translations
 .PHONY: l10n
 l10n:
-	python -m aiogram_i18n multiple-extract \
+	i18n multiple-extract \
 		--input-paths $(bot_dir) \
 		--output-dir $(translations_dir) \
 		-k l10n -k L --locales $(locale) \
