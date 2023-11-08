@@ -12,7 +12,7 @@
 # Working with project
 > **Please note that additional dependencies should be installed!**
 >
->  `pip install -r dev-requirements.txt`
+`pip install -r dev-requirements.txt`
 
 ### Updating database tables structure:
 **Make migration script:**
