@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Final
 
 from aiogram import Router
 from aiogram.filters import CommandStart
@@ -8,7 +8,7 @@ from aiogram_i18n import I18nContext as L10n
 
 from bot.models import DBUser
 
-router = Router(name=__name__)
+router: Final[Router] = Router(name=__name__)
 
 
 @router.message(CommandStart())

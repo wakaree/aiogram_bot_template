@@ -5,14 +5,14 @@ from aiogram import Bot, Dispatcher, loggers
 from aiogram.webhook import aiohttp_server as server
 from aiohttp import web
 
-from utils import logger
+from utils.loggers import MultilineLogger, setup_logger
 
 from .factory import create_bot, create_dispatcher
 from .settings import Settings
 
 
 async def webhook_startup(dispatcher: Dispatcher, bot: Bot, settings: Settings) -> None:
-    url = settings.webhook.build_url()
+    url: str = settings.webhook.build_url()
     await bot.delete_webhook()
     if await bot.set_webhook(
         url=url,
@@ -27,8 +27,9 @@ async def webhook_shutdown(bot: Bot, reset_webhook: bool) -> None:
     async with bot.session:
         if reset_webhook:
             if await bot.delete_webhook():
-                return loggers.webhook.info("Dropped main bot webhook.")
-            return loggers.webhook.error("Failed to drop main bot webhook.")
+                loggers.webhook.info("Dropped main bot webhook.")
+                return
+            loggers.webhook.error("Failed to drop main bot webhook.")
 
 
 async def drop_pending_updates(bots: list[Bot]) -> None:
@@ -39,14 +40,14 @@ async def drop_pending_updates(bots: list[Bot]) -> None:
 
 @click.group("cli")
 def cli() -> None:
-    logger.setup()
+    setup_logger()
 
 
 @cli.command("polling")
 @click.option("-s", "--skip-updates", is_flag=True, default=False)
 def run_polling(skip_updates: bool) -> None:
-    dp = create_dispatcher()
-    bot = create_bot(settings=cast(Settings, dp["settings"]))
+    dp: Dispatcher = create_dispatcher()
+    bot: Bot = create_bot(settings=cast(Settings, dp["settings"]))
     if skip_updates:
         dp.startup.register(drop_pending_updates)
     return dp.run_polling(bot)
@@ -55,11 +56,11 @@ def run_polling(skip_updates: bool) -> None:
 @cli.command("webhook")
 @click.option("-r", "--reset-webhook", is_flag=True, default=False)
 def run_webhook(reset_webhook: bool) -> None:
-    app = web.Application()
-    dp = create_dispatcher()
+    app: web.Application = web.Application()
+    dp: Dispatcher = create_dispatcher()
     settings: Settings = dp["settings"]
 
-    bot = create_bot(settings=settings)
+    bot: Bot = create_bot(settings=settings)
     dp.startup.register(webhook_startup)
     dp.shutdown.register(webhook_shutdown)
 
@@ -72,7 +73,7 @@ def run_webhook(reset_webhook: bool) -> None:
         app=app,
         host=settings.webhook.host,
         port=settings.webhook.port,
-        print=logger.MultilineLogger(),
+        print=MultilineLogger(),
     )
 
 

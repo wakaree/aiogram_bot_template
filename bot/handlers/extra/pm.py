@@ -1,3 +1,5 @@
+from typing import Final
+
 from aiogram import Router, flags
 from aiogram.filters import JOIN_TRANSITION, LEAVE_TRANSITION, ChatMemberUpdatedFilter
 from aiogram.types import ChatMemberUpdated
@@ -5,7 +7,7 @@ from aiogram.types import ChatMemberUpdated
 from bot.filters import PRIVATE_ONLY
 from bot.models import DBUser
 
-router = Router(name=__name__)
+router: Final[Router] = Router(name=__name__)
 router.my_chat_member.filter(PRIVATE_ONLY)
 
 

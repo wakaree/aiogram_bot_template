@@ -11,6 +11,8 @@ from bot.services import Repository
 
 
 class Commit:
+    confirmed: bool
+
     def __init__(self, confirmed: bool) -> None:
         self.confirmed = confirmed
 

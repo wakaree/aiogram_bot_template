@@ -1,4 +1,6 @@
-from aiogram.filters import StateFilter
+from typing import Final
+
+from aiogram.filters import Filter, StateFilter
 from aiogram.fsm.state import State, StatesGroup
 
 
@@ -7,5 +9,5 @@ class SGForm(StatesGroup):
     age = State()
 
 
-NoneState = StateFilter(None)
-AnyState = ~NoneState
+NoneState: Final[Filter] = StateFilter(None)
+AnyState: Final[Filter] = ~NoneState

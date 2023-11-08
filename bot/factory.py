@@ -23,9 +23,9 @@ from .settings import Settings
 
 
 def create_dispatcher() -> Dispatcher:
-    redis = Redis()
+    redis: Redis = Redis()
 
-    dp = Dispatcher(
+    dp: Dispatcher = Dispatcher(
         name="main_dispatcher",
         storage=RedisStorage(redis=redis, json_loads=mjson.decode, json_dumps=mjson.encode),
         redis=redis,
@@ -36,8 +36,8 @@ def create_dispatcher() -> Dispatcher:
     dp.update.outer_middleware(DBSessionMiddleware(session_pool=create_pool(dsn=settings.dsn)))
     dp.update.outer_middleware(UserMiddleware())
 
-    l10n = I18nMiddleware(
-        FluentRuntimeCore(
+    l10n: I18nMiddleware = I18nMiddleware(
+        core=FluentRuntimeCore(
             path="translations/{locale}",
             raise_key_error=False,
             locales_map={Locale.RU: Locale.UK, Locale.UK: Locale.EN},
@@ -56,7 +56,7 @@ def create_dispatcher() -> Dispatcher:
 
 
 def create_bot(settings: Settings) -> Bot:
-    session = AiohttpSession(json_loads=mjson.decode, json_dumps=mjson.encode)
+    session: AiohttpSession = AiohttpSession(json_loads=mjson.decode, json_dumps=mjson.encode)
     session.middleware(RetryRequestMiddleware())
     return Bot(
         token=settings.api_token.get_secret_value(),

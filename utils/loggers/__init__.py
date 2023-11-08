@@ -3,10 +3,13 @@ import os
 
 from .multiline import MultilineLogger
 
-__all__ = ["setup", "MultilineLogger"]
+__all__ = ["database", "webhook", "setup_logger", "MultilineLogger"]
+
+webhook = logging.getLogger("bot.webhook")
+database = logging.getLogger("bot.database")
 
 
-def setup(level: int = logging.INFO) -> None:
+def setup_logger(level: int = logging.INFO) -> None:
     if not os.path.exists("logs"):
         os.mkdir("logs")
 

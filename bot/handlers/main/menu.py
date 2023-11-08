@@ -1,3 +1,5 @@
+from typing import Final
+
 from aiogram import Router
 
-router = Router(name=__name__)
+router: Final[Router] = Router(name=__name__)

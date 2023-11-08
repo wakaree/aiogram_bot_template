@@ -10,6 +10,9 @@ REPOSITORY_KEY: Final[str] = "repository"
 
 
 class DBSessionMiddleware(BaseMiddleware):
+    session_pool: async_sessionmaker[AsyncSession]
+    repo_key: str
+
     def __init__(
         self,
         session_pool: async_sessionmaker[AsyncSession],

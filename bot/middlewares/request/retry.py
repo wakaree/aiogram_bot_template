@@ -22,6 +22,9 @@ DEFAULT_MAX_RETRIES = 5
 
 
 class RetryRequestMiddleware(BaseRequestMiddleware):
+    backoff_config: BackoffConfig
+    max_retries: int
+
     def __init__(
         self,
         backoff_config: BackoffConfig = DEFAULT_BACKOFF_CONFIG,
@@ -49,7 +52,7 @@ class RetryRequestMiddleware(BaseRequestMiddleware):
                 if retries == self.max_retries:
                     raise
                 logger.error(
-                    "Request '%s' failed due to rate limit. Sleeping %s",
+                    "Request '%s' failed due to rate limit. Sleeping %s seconds.",
                     type(method).__name__,
                     e.retry_after,
                 )
@@ -60,7 +63,7 @@ class RetryRequestMiddleware(BaseRequestMiddleware):
                 if retries == self.max_retries:
                     raise
                 logger.error(
-                    "Request '%s' failed due to %s - %s. Sleeping %s",
+                    "Request '%s' failed due to %s - %s. Sleeping %s seconds.",
                     type(method).__name__,
                     type(e).__name__,
                     e,

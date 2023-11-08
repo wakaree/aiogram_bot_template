@@ -2,7 +2,7 @@
 
 Revision ID: 001
 Revises:
-Create Date: 2023-09-24 09:39:17.770056
+Create Date: 2023-11-08 21:47:32.499036
 
 """
 from typing import Optional, Sequence
@@ -24,10 +24,9 @@ def upgrade() -> None:
         sa.Column("id", sa.BigInteger(), nullable=False),
         sa.Column("name", sa.String(), nullable=False),
         sa.Column("locale", sa.String(length=8), nullable=False),
-        sa.Column(
-            "register_date", sa.DateTime(), server_default=sa.text("now()"), nullable=False
-        ),
         sa.Column("notifications", sa.Boolean(), nullable=False),
+        sa.Column("created_at", sa.DateTime(), server_default=sa.text("now()"), nullable=False),
+        sa.Column("updated_at", sa.DateTime(), server_default=sa.text("now()"), nullable=False),
         sa.PrimaryKeyConstraint("id"),
     )
     # ### end Alembic commands ###

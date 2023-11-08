@@ -3,6 +3,9 @@ from typing import Iterable, Optional
 
 
 class MultilineLogger:
+    level: int
+    logger: Logger
+
     def __init__(self, level: int = INFO, logger: Optional[Logger] = None) -> None:
         self.level = level
         self.logger = logger or getLogger()
@@ -11,4 +14,4 @@ class MultilineLogger:
         if isinstance(message, str):
             message = message.splitlines()
         for line in message:
-            self.logger.log(self.level, msg=line)
+            self.logger.log(level=self.level, msg=line)
