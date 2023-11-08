@@ -1,5 +1,5 @@
 [tool.black]
-line_length = 98
+line_length = 99
 exclude = "\\.?venv|\\.?tests"
 
 [tool.ruff]
@@ -21,6 +21,9 @@ select = [
     "T",
     "W",
     "YTT",
+    "RET",
+    "SIM",
+    "ASYNC",
 ]
 exclude = [
     ".venv",
