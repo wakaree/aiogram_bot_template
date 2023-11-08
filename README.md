@@ -14,7 +14,7 @@
 >
 `pip install -r dev-requirements.txt`
 
-### Updating database tables structure:
+## Updating database tables structure:
 **Make migration script:**
 
     make migration message=MESSAGE_WHAT_MIGRATION_DOES
@@ -24,7 +24,7 @@
     alembic upgrade head
 
 
-### Working with translations:
+## Working with translations:
 1. Parse new used localization keys to update translations files
    (`make l10n locale=TRANSLATION_LOCALE`)
 2. Write new translations in `.ftl` files by `translations/SPECIFIED_LOCALE`
