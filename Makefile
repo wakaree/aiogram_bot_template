@@ -38,4 +38,3 @@ migration:
 	  --autogenerate \
 	  --rev-id $(shell python migrations/_get_revision_id.py) \
 	  --message $(message)
-
