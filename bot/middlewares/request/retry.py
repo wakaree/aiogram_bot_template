@@ -39,8 +39,8 @@ class RetryRequestMiddleware(BaseRequestMiddleware):
         bot: Bot,
         method: TelegramMethod[TelegramType],
     ) -> Response[TelegramType]:
-        backoff = Backoff(config=self.backoff_config)
-        retries = 0
+        backoff: Backoff = Backoff(config=self.backoff_config)
+        retries: int = 0
 
         while True:
             retries += 1
