@@ -37,7 +37,7 @@
 3. Restart the bot
 
 
-## Used technologies:
+# Used technologies:
 - [Aiogram 3.x](https://github.com/aiogram/aiogram) (Telegram Bot framework)
 - [PostgreSQL](https://www.postgresql.org/) (database)
 - [SQLAlchemy](https://docs.sqlalchemy.org/en/20/) (working with database from Python)
