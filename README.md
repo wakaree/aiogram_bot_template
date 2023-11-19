@@ -12,7 +12,7 @@
 2. Configure and start [PostgreSQL](https://www.postgresql.org/)
 3. Configure and start Redis ([» Read more](https://redis.io/docs/install/install-redis/))
 4. Rename `.env.example` to `.env` and configure it
-5. Run database migrations with `alembic upgrade head` command
+5. Run database migrations with `make migrate` command
 6. Configure `telegram-bot.service` ([» Read more](https://gist.github.com/comhad/de830d6d1b7ae1f165b925492e79eac8))
 
 # Development
@@ -27,7 +27,7 @@
 
 **Run migrations:**
 
-    alembic upgrade head
+    make migrate
 
 
 ## Update translations
