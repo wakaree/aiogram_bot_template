@@ -5,7 +5,7 @@ After=network.target redis.service
 [Service]
 Type=simple
 WorkingDirectory=/absolute_path/to/your/working/directory
-ExecStart=/absolute_path/to/interpreter/python3.11 -m bot polling -s
+ExecStart=/absolute_path/to/interpreter/python3.11 -m bot
 KillMode=process
 Restart=always
 RestartSec=10

@@ -1,7 +1,12 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from aiogram_i18n.managers import BaseManager
 
-from bot.middlewares import Commit
-from bot.models import DBUser
+if TYPE_CHECKING:
+    from bot.middlewares import Commit
+    from bot.models import DBUser
 
 
 class UserManager(BaseManager):

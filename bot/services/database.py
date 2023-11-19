@@ -2,7 +2,6 @@ from dataclasses import dataclass
 from typing import Optional
 
 from aiogram.types import User
-from pydantic import PostgresDsn
 from sqlalchemy.ext.asyncio import (
     AsyncEngine,
     AsyncSession,
@@ -12,11 +11,10 @@ from sqlalchemy.ext.asyncio import (
 
 from bot.enums import Locale
 from bot.models import Base, DBUser
-from utils.loggers import database
 
 
-def create_pool(dsn: PostgresDsn) -> async_sessionmaker[AsyncSession]:
-    engine: AsyncEngine = create_async_engine(url=dsn.unicode_string())
+def create_pool(dsn: str) -> async_sessionmaker[AsyncSession]:
+    engine: AsyncEngine = create_async_engine(url=dsn)
     return async_sessionmaker(engine, expire_on_commit=False)
 
 
@@ -28,11 +26,10 @@ class Repository:
         return await self.session.get(entity=DBUser, ident=pk)
 
     async def create_user(self, user: User) -> DBUser:
-        db_user: DBUser = DBUser(  # type: ignore[call-arg]
+        db_user: DBUser = DBUser(
             id=user.id, name=user.full_name, locale=Locale.resolve(user.language_code)
         )
         await self.save(db_user)
-        database.info("New user in database: %s (%d)", user.full_name, user.id)
         return db_user
 
     async def save(self, model: Base) -> None:

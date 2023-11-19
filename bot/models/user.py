@@ -14,7 +14,7 @@ class DBUser(Base, TimestampMixin):
 
     id: Mapped[Int64] = mapped_column(primary_key=True)
     name: Mapped[str]
-    locale: Mapped[str] = mapped_column(String(length=8), default=Locale.DEFAULT)
+    locale: Mapped[str] = mapped_column(String(length=2), default=Locale.DEFAULT)
     notifications: Mapped[bool] = mapped_column(default=False)
 
     @property
@@ -23,4 +23,4 @@ class DBUser(Base, TimestampMixin):
 
     @property
     def mention(self) -> str:
-        return html.link(self.name, self.url)
+        return html.link(value=self.name, link=self.url)

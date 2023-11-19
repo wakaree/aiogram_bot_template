@@ -24,6 +24,5 @@ venv/
 
 docker-compose.yml
 .env
-config.yml
 
 .tests

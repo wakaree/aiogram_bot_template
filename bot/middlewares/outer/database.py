@@ -1,4 +1,4 @@
-from typing import Any, Awaitable, Callable, Dict, Final
+from typing import Any, Awaitable, Callable, Final
 
 from aiogram import BaseMiddleware
 from aiogram.types import TelegramObject
@@ -11,22 +11,24 @@ REPOSITORY_KEY: Final[str] = "repository"
 
 class DBSessionMiddleware(BaseMiddleware):
     session_pool: async_sessionmaker[AsyncSession]
-    repo_key: str
+    repository_key: str
+
+    __slots__ = ("session_pool", "repository_key")
 
     def __init__(
         self,
         session_pool: async_sessionmaker[AsyncSession],
-        repo_key: str = REPOSITORY_KEY,
+        repository_key: str = REPOSITORY_KEY,
     ) -> None:
         self.session_pool = session_pool
-        self.repo_key = repo_key
+        self.repository_key = repository_key
 
     async def __call__(
         self,
-        handler: Callable[[TelegramObject, Dict[str, Any]], Awaitable[Any]],
+        handler: Callable[[TelegramObject, dict[str, Any]], Awaitable[Any]],
         event: TelegramObject,
-        data: Dict[str, Any],
+        data: dict[str, Any],
     ) -> Any:
         async with self.session_pool() as session:
-            data[self.repo_key] = Repository(session=session)
+            data[self.repository_key] = Repository(session=session)
             return await handler(event, data)

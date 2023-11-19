@@ -1,18 +1,14 @@
 import logging
-import os
 
 from .multiline import MultilineLogger
 
-__all__ = ["database", "webhook", "setup_logger", "MultilineLogger"]
+__all__: list[str] = ["database", "webhook", "setup_logger", "MultilineLogger"]
 
-webhook = logging.getLogger("bot.webhook")
-database = logging.getLogger("bot.database")
+webhook: logging.Logger = logging.getLogger("bot.webhook")
+database: logging.Logger = logging.getLogger("bot.database")
 
 
 def setup_logger(level: int = logging.INFO) -> None:
-    if not os.path.exists("logs"):
-        os.mkdir("logs")
-
     for name in ["aiogram.middlewares", "aiogram.event", "aiohttp.access"]:
         logging.getLogger(name).setLevel(logging.WARNING)
 

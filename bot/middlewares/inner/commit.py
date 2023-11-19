@@ -1,17 +1,20 @@
 from __future__ import annotations
 
-from typing import Any, Awaitable, Callable, Dict
+from typing import TYPE_CHECKING, Any, Awaitable, Callable
 
 from aiogram import BaseMiddleware, Dispatcher
 from aiogram.dispatcher.flags import get_flag
 from aiogram.types import TelegramObject
 
-from bot.models import DBUser
-from bot.services import Repository
+if TYPE_CHECKING:
+    from bot.models import DBUser
+    from bot.services import Repository
 
 
 class Commit:
     confirmed: bool
+
+    __slots__ = ("confirmed",)
 
     def __init__(self, confirmed: bool) -> None:
         self.confirmed = confirmed
@@ -22,10 +25,6 @@ class Commit:
     def reject(self) -> None:
         self.confirmed = False
 
-    @classmethod
-    def from_data(cls, data: dict[str, Any]) -> Commit:
-        return cls(confirmed=get_flag(data, "do_commit", default=False))
-
 
 class CommitMiddleware(BaseMiddleware):
     def setup(self, dp: Dispatcher) -> None:
@@ -35,16 +34,17 @@ class CommitMiddleware(BaseMiddleware):
 
     async def __call__(
         self,
-        handler: Callable[[TelegramObject, Dict[str, Any]], Awaitable[Any]],
+        handler: Callable[[TelegramObject, dict[str, Any]], Awaitable[Any]],
         event: TelegramObject,
-        data: Dict[str, Any],
+        data: dict[str, Any],
     ) -> Any:
         repository: Repository = data["repository"]
         user: DBUser = data["user"]
-        commit = data["commit"] = Commit.from_data(data)
+        commit: Commit = Commit(confirmed=get_flag(data, "do_commit", default=False))
 
         try:
+            data["commit"] = commit
             return await handler(event, data)
         finally:
             if commit.confirmed:
-                await repository.save(user)
+                await repository.save(model=user)

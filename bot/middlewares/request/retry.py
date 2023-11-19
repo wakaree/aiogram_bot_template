@@ -25,6 +25,8 @@ class RetryRequestMiddleware(BaseRequestMiddleware):
     backoff_config: BackoffConfig
     max_retries: int
 
+    __slots__ = ("backoff_config", "max_retries")
+
     def __init__(
         self,
         backoff_config: BackoffConfig = DEFAULT_BACKOFF_CONFIG,

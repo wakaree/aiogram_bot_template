@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import logging
 import ssl
 from types import TracebackType
 from typing import Optional
@@ -10,16 +9,22 @@ from aiohttp import ClientSession, TCPConnector
 
 from utils import mjson
 
-log = logging.getLogger(__name__)
-
 
 class AiohttpClientMixin:
+    """
+    ``aiohttp.ClientSession`` factory for API wrappers
+    """
+
     _session: Optional[ClientSession]
     _ssl_context: ssl.SSLContext
+    _should_reset_connector: bool
+
+    __slots__ = ("_session", "_ssl_context", "_should_reset_connector")
 
     def __init__(self) -> None:
         self._session = None
         self._ssl_context = ssl.create_default_context(cafile=certifi.where())
+        self._should_reset_connector = True
 
     async def __aenter__(self) -> AiohttpClientMixin:
         await self.get_session()
@@ -33,19 +38,16 @@ class AiohttpClientMixin:
     ) -> None:
         await self.close()
 
-    async def get_new_session(self) -> ClientSession:
-        return ClientSession(
-            connector=TCPConnector(limit=100, ssl=self._ssl_context),
-            json_serialize=mjson.encode,
-        )
-
     async def get_session(self) -> ClientSession:
-        if self._session is None or self._session.closed:
-            self._session = await self.get_new_session()
+        if self._should_reset_connector:
+            await self.close()
 
-        if not self._session._loop.is_running():  # noqa: SLF001
-            await self._session.close()
-            self._session = await self.get_new_session()
+        if self._session is None or self._session.closed:
+            self._session = ClientSession(
+                connector=TCPConnector(limit=100, ssl=self._ssl_context),
+                json_serialize=mjson.encode,
+            )
+            self._should_reset_connector = False
 
         return self._session
 

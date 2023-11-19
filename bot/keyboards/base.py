@@ -13,6 +13,9 @@ def common_keyboard(
     selective: Optional[bool] = None,
     row_width: int = 2
 ) -> ReplyKeyboardMarkup:
+    """
+    Common reply keyboards build helper.
+    """
     builder: ReplyKeyboardBuilder = ReplyKeyboardBuilder()
     builder.row(*[KeyboardButton(text=text) for text in texts], width=row_width)
     return builder.as_markup(
