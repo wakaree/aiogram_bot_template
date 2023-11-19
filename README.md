@@ -1,39 +1,46 @@
 
-# Launching the bot
+# Deployment
+
+## Via [Docker](https://www.docker.com/)
+1. Copy `.env.dist` to `.env` and configure it
+2. Copy `docker-compose.example.yml` to `docker-compose.yml`
+3. Run `make app-build` command then `make app-run` to start the bot
+
+## Via Systemd service
 1. Setup [venv](https://docs.python.org/3/library/venv.html)
    and install requirements (`pip install -r requirements.txt`)
 2. Configure and start [PostgreSQL](https://www.postgresql.org/)
 3. Configure and start Redis ([» Read more](https://redis.io/docs/install/install-redis/))
-4. Fill configuration in `config.yml`
-5. Fill `sqlalchemy.url` in `alembic.ini`
-6. Run migrations (`alembic upgrade head`)
-7. Configure `telegram-bot.service` ([» Read more](https://gist.github.com/comhad/de830d6d1b7ae1f165b925492e79eac8))
+4. Rename `.env.example` to `.env` and configure it
+5. Run database migrations with `alembic upgrade head` command
+6. Configure `telegram-bot.service` ([» Read more](https://gist.github.com/comhad/de830d6d1b7ae1f165b925492e79eac8))
 
-# Working with project
+# Development
 > **Please note that additional dependencies should be installed!**
 
     pip install -r dev-requirements.txt
 
-## Updating database tables structure
+## Update database tables structure
 **Make migration script:**
 
-    make migration message=MESSAGE_WHAT_MIGRATION_DOES
+    make migration message=MESSAGE_WHAT_THE_MIGRATION_DOES
 
 **Run migrations:**
 
     alembic upgrade head
 
 
-## Working with translations
+## Update translations
 1. Parse new used localization keys to update translations files
    (`make l10n locale=TRANSLATION_LOCALE`)
-2. Write new translations in `.ftl` files by `translations/SPECIFIED_LOCALE`
+2. Write new translations in `.ftl` files by `translations/TRANSLATION_LOCALE`
 3. Restart the bot
 
 
-## Useful links
-- [PostgreSQL documentation](https://www.postgresql.org/docs/)
-- [SQLAlchemy documentation](https://docs.sqlalchemy.org/en/20/)
-- [alembic documentation](https://alembic.sqlalchemy.org/en/latest/)
-- [Redis documentation](https://redis.io/docs/)
-- [Fluent Syntax Guide](https://projectfluent.org/fluent/guide/)
+## Used technologies:
+- [Aiogram 3.x](https://github.com/aiogram/aiogram) (Telegram Bot framework)
+- [PostgreSQL](https://www.postgresql.org/) (database)
+- [SQLAlchemy](https://docs.sqlalchemy.org/en/20/) (working with database from Python)
+- [Alembic](https://alembic.sqlalchemy.org/en/latest/) (lightweight database migration tool)
+- [Redis](https://redis.io/docs/) (in-memory data storage for FSM and caching)
+- [Project Fluent](https://projectfluent.org/) (modern localization system)
