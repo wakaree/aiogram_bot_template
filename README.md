@@ -2,8 +2,8 @@
 # Deployment
 
 ## Via [Docker](https://www.docker.com/)
-1. Copy `.env.dist` to `.env` and configure it
-2. Copy `docker-compose.example.yml` to `docker-compose.yml`
+1. Rename `.env.dist` to `.env` and configure it
+2. Rename `docker-compose.example.yml` to `docker-compose.yml`
 3. Run `make app-build` command then `make app-run` to start the bot
 
 ## Via Systemd service
