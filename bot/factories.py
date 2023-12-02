@@ -19,13 +19,42 @@ from .middlewares import (
     CommitMiddleware,
     DBSessionMiddleware,
     RetryRequestMiddleware,
+    UserAccessMiddleware,
+    UserAutoCreationMiddleware,
     UserManager,
-    UserMiddleware,
 )
-from .services import create_pool
+from .services.database import create_pool
 
 if TYPE_CHECKING:
     from .settings import Settings
+
+
+def _setup_outer_middlewares(dispatcher: Dispatcher, settings: Settings) -> None:
+    db_session_middleware: DBSessionMiddleware = DBSessionMiddleware(
+        session_pool=create_pool(dsn=settings.build_postgres_dsn())
+    )
+
+    i18n: I18nMiddleware = I18nMiddleware(
+        core=FluentRuntimeCore(
+            path="translations/{locale}",
+            raise_key_error=False,
+            locales_map={Locale.RU: Locale.UK, Locale.UK: Locale.EN},
+        ),
+        manager=UserManager(),
+        context_key="l10n",
+        default_locale=Locale.DEFAULT,
+        middleware_key="l10n_middleware",
+    )
+
+    dispatcher.update.outer_middleware(db_session_middleware)
+    dispatcher.update.outer_middleware(UserAccessMiddleware())
+    i18n.setup(dispatcher=dispatcher)
+
+
+def _setup_inner_middlewares(dispatcher: Dispatcher) -> None:
+    UserAutoCreationMiddleware().setup_inner(router=dispatcher)
+    CommitMiddleware().setup_inner(router=dispatcher)
+    dispatcher.callback_query.middleware(CallbackAnswerMiddleware())
 
 
 def create_dispatcher(settings: Settings) -> Dispatcher:
@@ -40,35 +69,16 @@ def create_dispatcher(settings: Settings) -> Dispatcher:
         )
     )
 
-    dp: Dispatcher = Dispatcher(
+    dispatcher: Dispatcher = Dispatcher(
         name="main_dispatcher",
         storage=RedisStorage(redis=redis, json_loads=mjson.decode, json_dumps=mjson.encode),
         redis=redis,
         settings=settings,
     )
-    dp.include_routers(admin.router, main.router, extra.router)
-    dp.update.outer_middleware(
-        DBSessionMiddleware(session_pool=create_pool(dsn=settings.build_postgres_dsn()))
-    )
-    dp.update.outer_middleware(UserMiddleware())
-
-    l10n: I18nMiddleware = I18nMiddleware(
-        core=FluentRuntimeCore(
-            path="translations/{locale}",
-            raise_key_error=False,
-            locales_map={Locale.RU: Locale.UK, Locale.UK: Locale.EN},
-        ),
-        manager=UserManager(),
-        context_key="l10n",
-        default_locale=Locale.DEFAULT,
-        middleware_key="l10n_middleware",
-    )
-    l10n.setup(dp)
-
-    CommitMiddleware().setup(dp)
-    dp.callback_query.middleware(CallbackAnswerMiddleware())
-
-    return dp
+    dispatcher.include_routers(admin.router, main.router, extra.router)
+    _setup_outer_middlewares(dispatcher=dispatcher, settings=settings)
+    _setup_inner_middlewares(dispatcher=dispatcher)
+    return dispatcher
 
 
 def create_bot(settings: Settings) -> Bot:

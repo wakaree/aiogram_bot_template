@@ -1,5 +1,6 @@
 import asyncio
 import logging
+from typing import Final
 
 from aiogram import Bot
 from aiogram.client.session.middlewares.base import (
@@ -17,8 +18,8 @@ from aiogram.methods import AnswerCallbackQuery, Response, TelegramMethod
 from aiogram.methods.base import TelegramType
 from aiogram.utils.backoff import Backoff, BackoffConfig
 
-logger = logging.getLogger(__name__)
-DEFAULT_MAX_RETRIES = 5
+logger: logging.Logger = logging.getLogger(__name__)
+DEFAULT_MAX_RETRIES: Final[int] = 7
 
 
 class RetryRequestMiddleware(BaseRequestMiddleware):

@@ -1,9 +1,9 @@
 from typing import Final
 
-from aiogram import Router
+from aiogram import F, Router
 
-from bot.filters import ADMIN_ONLY
+from bot.filters import MagicData
 
 router: Final[Router] = Router(name=__name__)
-router.message.filter(ADMIN_ONLY)
-router.callback_query.filter(ADMIN_ONLY)
+router.message.filter(MagicData(F.chat.id == F.config.admin_chat_id))
+router.callback_query.filter(MagicData(F.message.chat.id == F.config.admin_chat_id))

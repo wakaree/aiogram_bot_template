@@ -8,7 +8,7 @@ class Settings(BaseSettings):
     bot_token: SecretStr
     use_webhook: bool
     drop_pending_updates: bool
-    dev_id: int
+    admin_chat_id: int
 
     postgres_host: str
     postgres_db: str

@@ -2,13 +2,15 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, Awaitable, Callable
 
-from aiogram import BaseMiddleware, Dispatcher
 from aiogram.dispatcher.flags import get_flag
+from aiogram.enums import UpdateType
 from aiogram.types import TelegramObject
+
+from ..event_typed import EventTypedMiddleware
 
 if TYPE_CHECKING:
     from bot.models import DBUser
-    from bot.services import Repository
+    from bot.services.database import Repository
 
 
 class Commit:
@@ -26,11 +28,8 @@ class Commit:
         self.confirmed = False
 
 
-class CommitMiddleware(BaseMiddleware):
-    def setup(self, dp: Dispatcher) -> None:
-        dp.message.middleware(self)
-        dp.callback_query.middleware(self)
-        dp.my_chat_member.middleware(self)
+class CommitMiddleware(EventTypedMiddleware):
+    __event_types__ = [UpdateType.MESSAGE, UpdateType.CALLBACK_QUERY, UpdateType.MY_CHAT_MEMBER]
 
     async def __call__(
         self,
@@ -47,4 +46,4 @@ class CommitMiddleware(BaseMiddleware):
             return await handler(event, data)
         finally:
             if commit.confirmed:
-                await repository.save(model=user)
+                await repository.user.save(model=user)

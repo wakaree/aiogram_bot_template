@@ -1,14 +1,14 @@
 from typing import Final
 
-from aiogram import Router, flags
+from aiogram import F, Router, flags
+from aiogram.enums import ChatType
 from aiogram.filters import JOIN_TRANSITION, LEAVE_TRANSITION, ChatMemberUpdatedFilter
 from aiogram.types import ChatMemberUpdated
 
-from bot.filters import PRIVATE_ONLY
 from bot.models import DBUser
 
 router: Final[Router] = Router(name=__name__)
-router.my_chat_member.filter(PRIVATE_ONLY)
+router.my_chat_member.filter(F.chat.type == ChatType.PRIVATE)
 
 
 @router.my_chat_member(ChatMemberUpdatedFilter(JOIN_TRANSITION))

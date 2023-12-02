@@ -1,5 +1,5 @@
-from .inner import Commit, CommitMiddleware
-from .outer import DBSessionMiddleware, UserManager, UserMiddleware
+from .inner import Commit, CommitMiddleware, UserAutoCreationMiddleware
+from .outer import DBSessionMiddleware, UserAccessMiddleware, UserManager
 from .request import RetryRequestMiddleware
 
 __all__: list[str] = [
@@ -7,6 +7,7 @@ __all__: list[str] = [
     "Commit",
     "CommitMiddleware",
     "UserManager",
-    "UserMiddleware",
+    "UserAccessMiddleware",
+    "UserAutoCreationMiddleware",
     "RetryRequestMiddleware",
 ]
