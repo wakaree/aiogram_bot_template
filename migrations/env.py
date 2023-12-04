@@ -2,9 +2,9 @@ import asyncio
 
 from alembic import context
 from alembic.config import Config
-from sqlalchemy import MetaData, pool
+from sqlalchemy import MetaData
 from sqlalchemy.engine import Connection
-from sqlalchemy.ext.asyncio import AsyncEngine, async_engine_from_config
+from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine
 
 from bot.models import Base
 from bot.settings import Settings
@@ -67,16 +67,11 @@ def do_run_migrations(connection: Connection) -> None:
 
 
 async def run_async_migrations() -> None:
-    """In this scenario we need to create an Engine
-    and associate a connection with the context.
-
     """
-    connectable: AsyncEngine = async_engine_from_config(
-        config.get_section(config.config_ini_section, {}),
-        prefix="sqlalchemy.",
-        poolclass=pool.NullPool,
-        url=_get_postgres_dsn(),
-    )
+    In this scenario we need to create an Engine
+    and associate a connection with the context.
+    """
+    connectable: AsyncEngine = create_async_engine(url=_get_postgres_dsn())
 
     async with connectable.connect() as connection:
         await connection.run_sync(do_run_migrations)
