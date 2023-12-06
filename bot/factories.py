@@ -41,9 +41,7 @@ def _setup_outer_middlewares(dispatcher: Dispatcher, settings: Settings) -> None
             locales_map={Locale.RU: Locale.UK, Locale.UK: Locale.EN},
         ),
         manager=UserManager(),
-        context_key="l10n",
         default_locale=Locale.DEFAULT,
-        middleware_key="l10n_middleware",
     )
 
     dispatcher.update.outer_middleware(db_session_middleware)

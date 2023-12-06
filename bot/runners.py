@@ -41,20 +41,20 @@ async def webhook_shutdown(bot: Bot, settings: Settings) -> None:
     await bot.session.close()
 
 
-def run_polling(dp: Dispatcher, bot: Bot) -> None:
-    dp.startup.register(polling_startup)
-    return dp.run_polling(bot)
+def run_polling(dispatcher: Dispatcher, bot: Bot) -> None:
+    dispatcher.startup.register(polling_startup)
+    return dispatcher.run_polling(bot)
 
 
-def run_webhook(dp: Dispatcher, bot: Bot, settings: Settings) -> None:
+def run_webhook(dispatcher: Dispatcher, bot: Bot, settings: Settings) -> None:
     app: web.Application = web.Application()
-    dp.startup.register(webhook_startup)
-    dp.shutdown.register(webhook_shutdown)
+    dispatcher.startup.register(webhook_startup)
+    dispatcher.shutdown.register(webhook_shutdown)
 
     server.SimpleRequestHandler(
-        dispatcher=dp, bot=bot, secret_token=settings.webhook_secret_token
+        dispatcher=dispatcher, bot=bot, secret_token=settings.webhook_secret_token
     ).register(app, path=settings.webhook_path)
-    server.setup_application(app, dp, bot=bot, reset_webhook=settings.reset_webhook)
+    server.setup_application(app, dispatcher, bot=bot, reset_webhook=settings.reset_webhook)
 
     return web.run_app(
         app=app,

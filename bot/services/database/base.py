@@ -22,7 +22,7 @@ class BaseRepository(ABC):
         self._session = session
         self._entity = entity
 
-    async def save(self, model: Base) -> None:
+    async def save(self, model: T) -> None:
         self._session.add(model)
         await self._session.commit()
 

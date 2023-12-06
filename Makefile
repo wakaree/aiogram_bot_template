@@ -19,12 +19,12 @@ reformat:
 	@ruff $(project_dir) --fix
 
 # Update translations
-.PHONY: l10n
-l10n:
+.PHONY: i18n
+i18n:
 	i18n multiple-extract \
 		--input-paths $(bot_dir) \
 		--output-dir $(translations_dir) \
-		-k l10n -k L --locales $(locale) \
+		-k i18n -k L --locales $(locale) \
 		--create-missing-dirs
 
 # Make database migration

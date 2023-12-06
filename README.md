@@ -32,7 +32,7 @@
 
 ## Update translations
 1. Parse new used localization keys to update translations files
-   (`make l10n locale=TRANSLATION_LOCALE`)
+   (`make i18n locale=TRANSLATION_LOCALE`)
 2. Write new translations in `.ftl` files by `translations/TRANSLATION_LOCALE`
 3. Restart the bot
 

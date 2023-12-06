@@ -17,10 +17,11 @@ class UserAccessMiddleware(BaseMiddleware):
         event: TelegramObject,
         data: dict[str, Any],
     ) -> Optional[Any]:
-        user: Optional[User] = data.get("event_from_user")
-        if user is not None:
-            repository: Repository = data["repository"]
-            user: Optional[DBUser] = await repository.user.get(pk=user.id)
-            if user:
-                data["user"] = user
+        aiogram_user: Optional[User] = data.get("event_from_user")
+        if aiogram_user is None:
+            return await handler(event, data)
+        repository: Repository = data["repository"]
+        user: Optional[DBUser] = await repository.user.get(pk=aiogram_user.id)
+        if user:
+            data["user"] = user
         return await handler(event, data)

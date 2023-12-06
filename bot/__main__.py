@@ -10,11 +10,11 @@ from .settings import Settings
 def main() -> None:
     setup_logger()
     settings: Settings = Settings()
-    dp: Dispatcher = create_dispatcher(settings=settings)
+    dispatcher: Dispatcher = create_dispatcher(settings=settings)
     bot: Bot = create_bot(settings=settings)
     if settings.use_webhook:
-        return run_webhook(dp=dp, bot=bot, settings=settings)
-    return run_polling(dp=dp, bot=bot)
+        return run_webhook(dispatcher=dispatcher, bot=bot, settings=settings)
+    return run_polling(dispatcher=dispatcher, bot=bot)
 
 
 if __name__ == "__main__":

@@ -19,8 +19,6 @@ class AiohttpClientMixin:
     _ssl_context: ssl.SSLContext
     _should_reset_connector: bool
 
-    __slots__ = ("_session", "_ssl_context", "_should_reset_connector")
-
     def __init__(self) -> None:
         self._session = None
         self._ssl_context = ssl.create_default_context(cafile=certifi.where())
