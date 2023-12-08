@@ -30,11 +30,8 @@ if TYPE_CHECKING:
 
 
 def _setup_outer_middlewares(dispatcher: Dispatcher, settings: Settings) -> None:
-    db_session_middleware: DBSessionMiddleware = DBSessionMiddleware(
-        session_pool=create_pool(dsn=settings.build_postgres_dsn())
-    )
-
-    i18n: I18nMiddleware = I18nMiddleware(
+    pool = dispatcher["session_pool"] = create_pool(dsn=settings.build_postgres_dsn())
+    i18n_middleware = dispatcher["i18n_middleware"] = I18nMiddleware(
         core=FluentRuntimeCore(
             path="translations/{locale}",
             raise_key_error=False,
@@ -44,9 +41,9 @@ def _setup_outer_middlewares(dispatcher: Dispatcher, settings: Settings) -> None
         default_locale=Locale.DEFAULT,
     )
 
-    dispatcher.update.outer_middleware(db_session_middleware)
+    dispatcher.update.outer_middleware(DBSessionMiddleware(session_pool=pool))
     dispatcher.update.outer_middleware(UserAccessMiddleware())
-    i18n.setup(dispatcher=dispatcher)
+    i18n_middleware.setup(dispatcher=dispatcher)
 
 
 def _setup_inner_middlewares(dispatcher: Dispatcher) -> None:

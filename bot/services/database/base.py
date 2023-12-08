@@ -1,18 +1,16 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import TYPE_CHECKING, Any, Optional, TypeVar
+from typing import TYPE_CHECKING, Any, Awaitable, Callable, Generic, Optional, TypeVar
 
-if TYPE_CHECKING:
-    from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.ext.asyncio import AsyncSession
 
-    from bot.models import Base
-
+from bot.models import Base
 
 T = TypeVar("T", bound=Base)
 
 
-class BaseRepository(ABC):
+class BaseRepository(Generic[T], ABC):
     _session: AsyncSession
     _entity: type[T]
 
@@ -22,13 +20,18 @@ class BaseRepository(ABC):
         self._session = session
         self._entity = entity
 
-    async def save(self, model: T) -> None:
+    async def save(self, model: Base) -> None:
         self._session.add(model)
         await self._session.commit()
 
     async def get(self, pk: int) -> Optional[T]:
         return await self._session.get(entity=self._entity, ident=pk)
 
-    @abstractmethod
-    async def create(self, *args: Any, **kwargs: Any) -> T:
-        pass
+    if TYPE_CHECKING:
+        create: Callable[..., Awaitable[T]]
+
+    else:
+
+        @abstractmethod
+        async def create(self, *args: Any, **kwargs: Any) -> T:
+            pass

@@ -5,6 +5,8 @@ from typing import TYPE_CHECKING, Any, Awaitable, Callable, Optional
 from aiogram.enums import UpdateType
 from aiogram.types import TelegramObject, User
 
+from utils.loggers import database
+
 from ..event_typed import EventTypedMiddleware
 
 if TYPE_CHECKING:
@@ -26,6 +28,7 @@ class UserAutoCreationMiddleware(EventTypedMiddleware):
             return await handler(event, data)
         if "user" not in data:
             repository: Repository = data["repository"]
-            user: DBUser = await repository.user.create(user=aiogram_user)
+            user: DBUser = await repository.user.create(user=aiogram_user, chat=data["event_chat"])
+            database.info("New user in database: %s (%d)", user.name, user.id)
             data["user"] = user
         return await handler(event, data)

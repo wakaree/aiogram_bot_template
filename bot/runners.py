@@ -55,6 +55,7 @@ def run_webhook(dispatcher: Dispatcher, bot: Bot, settings: Settings) -> None:
         dispatcher=dispatcher, bot=bot, secret_token=settings.webhook_secret_token
     ).register(app, path=settings.webhook_path)
     server.setup_application(app, dispatcher, bot=bot, reset_webhook=settings.reset_webhook)
+    app.update(**dispatcher.workflow_data, bot=bot)
 
     return web.run_app(
         app=app,
