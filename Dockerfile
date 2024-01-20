@@ -1,9 +1,6 @@
-# Separate build image
 FROM python:3.11-slim
-
 ENV PYTHONPATH "${PYTHONPATH}:/app"
 ENV PATH "/app/scripts:${PATH}"
-
 WORKDIR /app
 
 # Install poetry
@@ -21,6 +18,7 @@ RUN set +x \
 COPY pyproject.toml poetry.lock /app/
 RUN poetry install -n --only main --no-root
 
+# Prepare entrypoint
 ADD . /app/
 RUN chmod +x scripts/* \
  && poetry install -n --only-root
