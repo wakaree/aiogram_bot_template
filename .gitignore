@@ -1,10 +1,23 @@
+# Project
 .idea/
 .vscode/
+.venv/
+.tests/
+.env
+venv/
+docker-compose.yml
+poetry.lock
 
+# Cache
 __pycache__/
 *.py[cod]
-*.mo
+.cache/
+.ruff_cache/
+.mypy_cache/
+.pytest_cache/
+.coverage/
 
+# Build
 env/
 build/
 _build/
@@ -12,17 +25,3 @@ dist/
 site/
 *.egg-info/
 *.egg
-
-.ruff_cache
-.mypy_cache
-.pytest_cache
-.coverage
-
-venv/
-.venv/
-.hatch/
-
-docker-compose.yml
-.env
-
-.tests

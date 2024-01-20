@@ -1,23 +1,27 @@
 # Separate build image
-FROM python:3.11-slim as compile-image
-RUN python -m venv /opt/.venv
-ENV PATH="/opt/.venv/bin:$PATH"
-COPY requirements.txt .
-RUN apt-get update \
- && apt-get install -y gcc \
- && pip install --no-cache-dir --upgrade pip \
- && pip install --no-cache-dir setuptools wheel \
- && pip install --no-cache-dir -r requirements.txt \
+FROM python:3.11-slim
+
+ENV PYTHONPATH "${PYTHONPATH}:/app"
+ENV PATH "/app/scripts:${PATH}"
+
+WORKDIR /app
+
+# Install poetry
+RUN set +x \
+ && apt update \
+ && apt upgrade -y \
+ && apt install -y curl gcc build-essential \
+ && curl -sSL https://install.python-poetry.org | POETRY_HOME=/opt/poetry python -\
+ && cd /usr/local/bin \
+ && ln -s /opt/poetry/bin/poetry \
+ && poetry config virtualenvs.create false \
  && rm -rf /var/lib/apt/lists/*
 
-# Final image
-FROM python:3.11-slim
-COPY --from=compile-image /opt/.venv /opt/.venv
-ENV PATH="/opt/.venv/bin:$PATH"
-WORKDIR /app
-COPY bot /app/bot
-COPY migrations /app/migrations
-COPY translations /app/translations
-COPY utils /app/utils
-COPY alembic.ini /app/alembic.ini
-CMD ["python", "-m", "bot"]
+# Install dependencies
+COPY pyproject.toml poetry.lock /app/
+RUN poetry install -n --only main --no-root
+
+ADD . /app/
+RUN chmod +x scripts/* \
+ && poetry install -n --only-root
+ENTRYPOINT ["docker-entrypoint.sh"]

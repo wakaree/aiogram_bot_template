@@ -10,7 +10,7 @@ services:
       expose:
          - "${REDIS_PORT}"
       volumes:
-         - redis-data:/redis_data
+         - redis-data:${REDIS_DATA}
 
    postgres:
       image: postgres:16-alpine
@@ -28,14 +28,6 @@ services:
       volumes:
          - postgres-data:${POSTGRES_DATA}
 
-   db_migrations:
-      build: .
-      restart: on-failure
-      depends_on:
-         - postgres
-      env_file: .env
-      command: sh -c "python -m alembic upgrade head"
-
    bot:
       build: .
       restart: always
@@ -43,7 +35,10 @@ services:
       depends_on:
          - redis
          - postgres
-         - db_migrations
+
+      # You can remove this fields if you don't use webhooks.
+      ports:
+         - "${WEBHOOK_PORT}:${WEBHOOK_PORT}"
 
 volumes:
    redis-data:

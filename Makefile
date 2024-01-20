@@ -1,27 +1,25 @@
 
 project_dir := .
 bot_dir := bot
-
 translations_dir := translations
-
 
 # Lint code
 .PHONY: lint
 lint:
-	@black --check --diff $(project_dir)
-	@ruff $(project_dir)
-	@mypy $(project_dir) --strict
+	@poetry run black --check --diff $(project_dir)
+	@poetry run ruff $(project_dir)
+	@poetry run mypy $(project_dir) --strict
 
 # Reformat code
 .PHONY: reformat
 reformat:
-	@black $(project_dir)
-	@ruff $(project_dir) --fix
+	@poetry run black $(project_dir)
+	@poetry run ruff $(project_dir) --fix
 
 # Update translations
 .PHONY: i18n
 i18n:
-	i18n multiple-extract \
+	poetry run i18n multiple-extract \
 		--input-paths $(bot_dir) \
 		--output-dir $(translations_dir) \
 		-k i18n -k L --locales $(locale) \
@@ -30,13 +28,13 @@ i18n:
 # Make database migration
 .PHONY: migration
 migration:
-	alembic revision \
+	poetry run alembic revision \
 	  --autogenerate \
 	  --rev-id $(shell python migrations/_get_next_revision_id.py) \
 	  --message $(message)
 
 .PHONY: migrate
-	alembic upgrade head
+	poetry run alembic upgrade head
 
 .PHONY: app-build
 app-build:
