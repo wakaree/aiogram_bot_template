@@ -4,7 +4,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "My Telegram Bot"
-version = "0.1"
+version = "0.1.0"
 description = ""
 authors = ["nullmatawasoradesu"]
 readme = "README.md"
@@ -12,27 +12,27 @@ repository = "https://github.com/wakaree/aiogram_bot_template"
 
 [tool.poetry.dependencies]
 python = "^3.11"
-aiogram = "^3.3.0"
+aiogram = "^3.4.1"
 aiogram_i18n = "^1.3.4"
-aiohttp = "^3.9.1"
+aiohttp = "^3.9.3"
 alembic = "^1.13.1"
 asyncpg = "^0.29.0"
-redis = "^5.0.1"
-sqlalchemy = "^2.0.25"
-msgspec = "^0.18.5"
+redis = "^5.0.2"
+sqlalchemy = "^2.0.27"
+msgspec = "^0.18.6"
 pydantic = "^2.5.3"
 pydantic_settings = "^2.1.0"
 fluent_runtime = "^0.4.0"
 
 [tool.poetry.dev-dependencies]
-libcst = "^1.1.0"
+libcst = "^1.2.0"
 black = "^23.12.1"
 mypy = "^1.8.0"
-ruff = "^0.1.14"
+ruff = "^0.1.15"
 
 [tool.black]
 line_length = 99
-exclude = "\\.?venv|\\.?tests|\\.cache"
+exclude = "\\.?venv|\\.cache"
 
 [tool.ruff]
 target-version = "py38"
@@ -43,14 +43,11 @@ select = [
     "E",
     "F",
     "I",
-    "ICN",
     "ISC",
     "N",
     "PLC",
     "PLE",
     "Q",
-    "S",
-    "T",
     "W",
     "YTT",
     "RET",
@@ -90,6 +87,6 @@ ignore_missing_imports = true
 disallow_untyped_defs = true
 
 [[tool.mypy.overrides]]
-module = ["bot.telegram.handlers.*"]
+module = ["aiogram_bot_template.telegram.handlers.*"]
 strict_optional = false
 warn_return_any = false
