@@ -9,35 +9,35 @@ from aiohttp import web
 from .utils.loggers import MultilineLogger
 
 if TYPE_CHECKING:
-    from .settings import Settings
+    from .app_config import AppConfig
 
 
-async def polling_startup(bots: list[Bot], settings: Settings) -> None:
+async def polling_startup(bots: list[Bot], config: AppConfig) -> None:
     for bot in bots:
-        await bot.delete_webhook(drop_pending_updates=settings.drop_pending_updates)
-    if settings.drop_pending_updates:
+        await bot.delete_webhook(drop_pending_updates=config.common.drop_pending_updates)
+    if config.common.drop_pending_updates:
         loggers.dispatcher.info("Updates skipped successfully")
 
 
-async def webhook_startup(dispatcher: Dispatcher, bot: Bot, settings: Settings) -> None:
-    url: str = settings.build_webhook_url()
+async def webhook_startup(dispatcher: Dispatcher, bot: Bot, config: AppConfig) -> None:
+    url: str = config.webhook.build_url()
     if await bot.set_webhook(
         url=url,
         allowed_updates=dispatcher.resolve_used_update_types(),
-        secret_token=settings.webhook_secret_token,
-        drop_pending_updates=settings.drop_pending_updates,
+        secret_token=config.webhook.secret_token.get_secret_value(),
+        drop_pending_updates=config.common.drop_pending_updates,
     ):
         return loggers.webhook.info("Bot webhook successfully set on url '%s'", url)
-    return loggers.webhook.error("Failed to set main bot webhook on url '%s'", url)
+    return loggers.webhook.error("Failed to set common bot webhook on url '%s'", url)
 
 
-async def webhook_shutdown(bot: Bot, settings: Settings) -> None:
-    if not settings.reset_webhook:
+async def webhook_shutdown(bot: Bot, config: AppConfig) -> None:
+    if not config.webhook.reset:
         return
     if await bot.delete_webhook():
-        loggers.webhook.info("Dropped main bot webhook.")
+        loggers.webhook.info("Dropped common bot webhook.")
     else:
-        loggers.webhook.error("Failed to drop main bot webhook.")
+        loggers.webhook.error("Failed to drop common bot webhook.")
     await bot.session.close()
 
 
@@ -46,20 +46,21 @@ def run_polling(dispatcher: Dispatcher, bot: Bot) -> None:
     return dispatcher.run_polling(bot)
 
 
-def run_webhook(dispatcher: Dispatcher, bot: Bot, settings: Settings) -> None:
+def run_webhook(dispatcher: Dispatcher, bot: Bot, config: AppConfig) -> None:
     app: web.Application = web.Application()
+    server.SimpleRequestHandler(
+        dispatcher=dispatcher,
+        bot=bot,
+        secret_token=config.webhook.secret_token.get_secret_value(),
+    ).register(app, path=config.webhook.path)
+    server.setup_application(app, dispatcher, bot=bot)
+    app.update(**dispatcher.workflow_data, bot=bot)
     dispatcher.startup.register(webhook_startup)
     dispatcher.shutdown.register(webhook_shutdown)
 
-    server.SimpleRequestHandler(
-        dispatcher=dispatcher, bot=bot, secret_token=settings.webhook_secret_token
-    ).register(app, path=settings.webhook_path)
-    server.setup_application(app, dispatcher, bot=bot, reset_webhook=settings.reset_webhook)
-    app.update(**dispatcher.workflow_data, bot=bot)
-
     return web.run_app(
         app=app,
-        host=settings.webhook_host,
-        port=settings.webhook_port,
+        host=config.webhook.host,
+        port=config.webhook.port,
         print=MultilineLogger(),
     )

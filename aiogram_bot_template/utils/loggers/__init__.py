@@ -2,9 +2,8 @@ import logging
 
 from .multiline import MultilineLogger
 
-__all__ = ["database", "webhook", "setup_logger", "MultilineLogger"]
+__all__ = ["database", "setup_logger", "MultilineLogger"]
 
-webhook: logging.Logger = logging.getLogger("bot.webhook")
 database: logging.Logger = logging.getLogger("bot.database")
 
 

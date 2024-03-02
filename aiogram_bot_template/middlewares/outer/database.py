@@ -1,27 +1,19 @@
-from typing import Any, Awaitable, Callable, Final
+from typing import Any, Awaitable, Callable
 
 from aiogram import BaseMiddleware
 from aiogram.types import TelegramObject
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
-from ...services.database import Repository
-
-REPOSITORY_KEY: Final[str] = "repository"
+from ...services.database import SQLSessionContext
 
 
 class DBSessionMiddleware(BaseMiddleware):
     session_pool: async_sessionmaker[AsyncSession]
-    repository_key: str
 
-    __slots__ = ("session_pool", "repository_key")
+    __slots__ = ("session_pool",)
 
-    def __init__(
-        self,
-        session_pool: async_sessionmaker[AsyncSession],
-        repository_key: str = REPOSITORY_KEY,
-    ) -> None:
+    def __init__(self, session_pool: async_sessionmaker[AsyncSession]) -> None:
         self.session_pool = session_pool
-        self.repository_key = repository_key
 
     async def __call__(
         self,
@@ -29,6 +21,7 @@ class DBSessionMiddleware(BaseMiddleware):
         event: TelegramObject,
         data: dict[str, Any],
     ) -> Any:
-        async with self.session_pool() as session:
-            data[self.repository_key] = Repository(session=session)
+        async with SQLSessionContext(session_pool=self.session_pool) as (repository, uow):
+            data["repository"] = repository
+            data["uow"] = uow
             return await handler(event, data)

@@ -2,12 +2,12 @@ import asyncio
 
 from alembic import context
 from alembic.config import Config
-from sqlalchemy import MetaData
+from sqlalchemy import URL, MetaData
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine
 
+from aiogram_bot_template.app_config import PostgresConfig
 from aiogram_bot_template.services.database.models import Base
-from aiogram_bot_template.settings import Settings
 from aiogram_bot_template.utils.loggers import setup_logger
 
 # this is the Alembic Config object, which provides
@@ -24,15 +24,16 @@ setup_logger()
 # target_metadata = mymodel.Base.metadata
 target_metadata: MetaData = Base.metadata
 
+
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
 
 
-def _get_postgres_dsn() -> str:
-    settings: Settings = Settings()
-    return settings.build_postgres_dsn()
+def _get_postgres_dsn() -> URL:
+    _config: PostgresConfig = PostgresConfig()
+    return _config.build_dsn()
 
 
 def run_migrations_offline() -> None:

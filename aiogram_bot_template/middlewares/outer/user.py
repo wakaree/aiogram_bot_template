@@ -6,8 +6,11 @@ from aiogram import BaseMiddleware
 from aiogram.types import Chat, TelegramObject, User
 from aiogram_i18n import I18nMiddleware
 
+from ...services.database import DBUser
+from ...utils.loggers import database as logger
+
 if TYPE_CHECKING:
-    from ...services.database import DBUser, Repository
+    from ...services.database import Repository, UoW
 
 
 class UserMiddleware(BaseMiddleware):
@@ -25,10 +28,11 @@ class UserMiddleware(BaseMiddleware):
             return await handler(event, data)
 
         repository: Repository = data["repository"]
-        user: Optional[DBUser] = await repository.user.get(user_id=aiogram_user.id)
+        user: Optional[DBUser] = await repository.users.get(user_id=aiogram_user.id)
         if user is None:
             i18n: I18nMiddleware = data["i18n_middleware"]
-            user = await repository.user.create_from_telegram(
+            uow: UoW = data["uow"]
+            user = DBUser.from_aiogram(
                 user=aiogram_user,
                 locale=(
                     aiogram_user.language_code
@@ -37,6 +41,8 @@ class UserMiddleware(BaseMiddleware):
                 ),
                 chat=chat,
             )
-        data["user"] = user
+            await uow.commit(user)
+            logger.info("New user in database: %s (%d)", aiogram_user.full_name, aiogram_user.id)
 
+        data["user"] = user
         return await handler(event, data)
