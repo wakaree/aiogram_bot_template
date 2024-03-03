@@ -1,6 +1,6 @@
 
 project_dir := .
-bot_dir := bot
+bot_dir := aiogram_bot_template
 translations_dir := translations
 
 # Lint code
