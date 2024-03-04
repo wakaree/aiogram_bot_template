@@ -3,7 +3,7 @@ from __future__ import annotations
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from .base import BaseRepository
-from .user import UsersRepository
+from .users import UsersRepository
 
 
 class Repository(BaseRepository):
