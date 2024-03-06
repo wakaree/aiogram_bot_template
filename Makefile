@@ -34,11 +34,17 @@ migration:
 	  --message $(message)
 
 .PHONY: migrate
+migrate:
 	poetry run alembic upgrade head
 
 .PHONY: app-build
 app-build:
 	docker-compose build
+
+.PHONY: app-run-db
+app-run-db:
+	docker compose stop
+	docker compose up -d redis postgres --remove-orphans
 
 .PHONY: app-run
 app-run:
