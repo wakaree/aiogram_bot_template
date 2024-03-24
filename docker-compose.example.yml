@@ -36,7 +36,7 @@ services:
          - redis
          - postgres
 
-      # You can remove this fields if you don't use webhooks.
+      # You can remove this field if you don't use webhooks.
       ports:
          - "${WEBHOOK_PORT}:${WEBHOOK_PORT}"
 

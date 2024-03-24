@@ -1,4 +1,4 @@
-from __future__ import annotations
+from typing import Self
 
 from aiogram import html
 from aiogram.enums import ChatType
@@ -27,8 +27,8 @@ class DBUser(Base, TimestampMixin):
         return html.link(value=self.name, link=self.url)
 
     @classmethod
-    def from_aiogram(cls, user: User, locale: str, chat: Chat) -> DBUser:
-        return DBUser(
+    def from_aiogram(cls, user: User, locale: str, chat: Chat) -> Self:
+        return cls(
             id=user.id,
             name=user.full_name,
             locale=locale,
