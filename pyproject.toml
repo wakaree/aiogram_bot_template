@@ -24,7 +24,7 @@ pydantic = "^2.5.3"
 pydantic_settings = "^2.1.0"
 fluent_runtime = "^0.4.0"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 libcst = "^1.2.0"
 black = "^23.12.1"
 mypy = "^1.8.0"
