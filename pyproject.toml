@@ -31,7 +31,7 @@ mypy = "^1.8.0"
 ruff = "^0.3.7"
 
 [tool.black]
-line-length = 88
+line-length = 99
 exclude = "\\.?venv|\\.cache"
 
 [tool.ruff]
