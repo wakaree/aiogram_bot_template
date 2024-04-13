@@ -26,17 +26,29 @@ fluent_runtime = "^0.4.0"
 
 [tool.poetry.group.dev.dependencies]
 libcst = "^1.2.0"
-black = "^23.12.1"
+black = "^24.4.0"
 mypy = "^1.8.0"
-ruff = "^0.1.15"
+ruff = "^0.3.7"
 
 [tool.black]
-line_length = 99
+line-length = 88
 exclude = "\\.?venv|\\.cache"
 
 [tool.ruff]
 target-version = "py38"
 line-length = 99
+exclude = [
+    ".git",
+    ".venv",
+    ".idea",
+    ".tests",
+    ".cache",
+    "build",
+    "dist",
+    "scripts",
+]
+
+[tool.ruff.lint]
 select = [
     "C",
     "DTZ",
@@ -54,16 +66,7 @@ select = [
     "SIM",
     "ASYNC",
 ]
-exclude = [
-    ".git",
-    ".venv",
-    ".idea",
-    ".tests",
-    ".cache",
-    "build",
-    "dist",
-    "scripts",
-]
+
 
 [tool.mypy]
 plugins = [
