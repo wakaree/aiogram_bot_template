@@ -13,7 +13,7 @@ RUN set +x \
  && apt-get purge --auto-remove -y curl \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/* \
- && poetry config virtualenvs.create false \
+ && poetry config virtualenvs.create false
 
 # Install dependencies
 COPY pyproject.toml poetry.lock /app/
