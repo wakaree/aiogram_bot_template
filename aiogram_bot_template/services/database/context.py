@@ -17,7 +17,7 @@ class SQLSessionContext:
         self._session = None
 
     async def __aenter__(self) -> tuple[Repository, UoW]:
-        self._session: Optional[AsyncSession] = await self._session_pool().__aenter__()
+        self._session = await self._session_pool().__aenter__()
         return Repository(session=self._session), UoW(session=self._session)
 
     async def __aexit__(
