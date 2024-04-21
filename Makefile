@@ -7,14 +7,14 @@ translations_dir := translations
 .PHONY: lint
 lint:
 	@poetry run black --check --diff $(project_dir)
-	@poetry run ruff $(project_dir)
+	@poetry run ruff check $(project_dir)
 	@poetry run mypy $(project_dir) --strict
 
 # Reformat code
 .PHONY: reformat
 reformat:
 	@poetry run black $(project_dir)
-	@poetry run ruff $(project_dir) --fix
+	@poetry run ruff check $(project_dir) --fix
 
 # Update translations
 .PHONY: i18n
