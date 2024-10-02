@@ -4,69 +4,59 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "My Telegram Bot"
-version = "0.1.0"
+version = "1.0"
 description = ""
-authors = ["nullmatawasoradesu"]
+authors = ["wakaree <nullmatawasoradesu@gmail.com>"]
 readme = "README.md"
 repository = "https://github.com/wakaree/aiogram_bot_template"
 
 [tool.poetry.dependencies]
 python = "^3.11"
-aiogram = "^3.4.1"
-aiogram_i18n = "^1.3.4"
-aiohttp = "^3.9.3"
-alembic = "^1.13.1"
+aiogram = "^3.13.1"
+aiogram_i18n = "^1.4"
+aiohttp = "^3.10.8"
+alembic = "^1.13.3"
 asyncpg = "^0.29.0"
-redis = "^5.0.3"
-sqlalchemy = "^2.0.29"
+redis = "^5.1.0"
+sqlalchemy = "^2.0.35"
 msgspec = "^0.18.6"
-pydantic = "^2.5.3"
-pydantic_settings = "^2.1.0"
+pydantic = "^2.9.2"
+pydantic_settings = "^2.5.2"
 fluent_runtime = "^0.4.0"
 
 [tool.poetry.group.dev.dependencies]
-libcst = "^1.2.0"
-black = "^24.4.0"
-mypy = "^1.8.0"
-ruff = "^0.3.7"
+black = "^24.8.0"
+mypy = "^1.11.2"
+ruff = "^0.6.8"
 
 [tool.black]
-line-length = 99
-exclude = "\\.?venv|\\.cache"
+line_length = 99
+exclude = "\\.?venv|\\.?tests"
 
 [tool.ruff]
 target-version = "py38"
 line-length = 99
-exclude = [
-    ".git",
-    ".venv",
-    ".idea",
-    ".tests",
-    ".cache",
-    "build",
-    "dist",
-    "scripts",
-]
-
-[tool.ruff.lint]
-select = [
+lint.select = [
     "C",
     "DTZ",
     "E",
     "F",
     "I",
+    "ICN",
     "ISC",
     "N",
     "PLC",
     "PLE",
     "Q",
+    "T",
     "W",
     "YTT",
-    "RET",
-    "SIM",
-    "ASYNC",
 ]
-
+exclude = [
+    ".venv",
+    ".idea",
+    ".tests",
+]
 
 [tool.mypy]
 plugins = [
@@ -74,20 +64,29 @@ plugins = [
     "pydantic.mypy"
 ]
 exclude = [
-    ".git",
+    "venv",
     ".venv",
     ".idea",
     ".tests",
-    ".cache",
-    "build",
-    "dist",
-    "scripts",
 ]
+warn_unused_configs = true
+disallow_any_generics = true
+disallow_subclassing_any = true
+disallow_untyped_calls = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+warn_unused_ignores = true
+warn_return_any = true
+no_implicit_reexport = true
+strict_equality = true
+extra_checks = true
 
 [[tool.mypy.overrides]]
 module = ["redis.*"]
 ignore_missing_imports = true
-disallow_untyped_defs = true
+disallow_untyped_defs = false
 
 [[tool.mypy.overrides]]
 module = ["aiogram_bot_template.telegram.handlers.*"]
