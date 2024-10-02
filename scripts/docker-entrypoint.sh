@@ -2,5 +2,5 @@
 
 set -e
 
-poetry run alembic upgrade head
-exec poetry run python -O -m aiogram_bot_template
+make migrate
+exec make run
