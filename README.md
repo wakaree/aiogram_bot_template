@@ -19,7 +19,10 @@
 - Configure and start Redis ([» Read more](https://redis.io/docs/install/install-redis/))
 - Rename `.env.example` to `.env` and configure it
 - Run database migrations with `make migrate` command
-- Configure `telegram-bot.service` ([» Read more](https://gist.github.com/comhad/de830d6d1b7ae1f165b925492e79eac8))
+- Fill `User` and `WorkingDirectory` fields in `systemd/telegram-bot.example.service` ([» Read more](https://gist.github.com/comhad/de830d6d1b7ae1f165b925492e79eac8)
+- Copy `systemd/telegram-bot.example.service` to `/etc/systemd/system/telegram-bot.service`
+- Run `systemctl start telegram-bot` to start the bot
+- If you want to start the bot on system boot, run `systemctl enable telegram-bot`
 
 ## Development
 ### Setup environment
@@ -35,16 +38,9 @@
 
     make migrate
 
-
-### Update translations
-1. Parse new used localization keys to update translations files
-   (`make i18n locale=TRANSLATION_LOCALE`)
-2. Write new translations in `.ftl` files by `translations/TRANSLATION_LOCALE`
-3. Restart the bot
-
 ## Used technologies:
 - [Aiogram 3.x](https://github.com/aiogram/aiogram) (Telegram bot framework)
-- [PostgreSQL](https://www.postgresql.org/) (database)
+- [PostgreSQL](https://www.postgresql.org/) (persistent relational database)
 - [SQLAlchemy](https://docs.sqlalchemy.org/en/20/) (working with database from Python)
 - [Alembic](https://alembic.sqlalchemy.org/en/latest/) (lightweight database migration tool)
 - [Redis](https://redis.io/docs/) (in-memory data storage for FSM and caching)
