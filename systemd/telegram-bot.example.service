@@ -1,0 +1,12 @@
+[Unit]
+Description=My Telegram Bot
+
+[Service]
+User=your_username_here
+WorkingDirectory=/full_path/to/your/working/directory
+ExecStart=make run
+Restart=always
+RestartSec=15
+
+[Install]
+WantedBy=multi-user.target

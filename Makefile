@@ -1,14 +1,5 @@
 
 project_dir := .
-bot_dir := aiogram_bot_template
-translations_dir := translations
-
-# Lint code
-.PHONY: lint
-lint:
-	@poetry run black --check --diff $(project_dir)
-	@poetry run ruff check $(project_dir)
-	@poetry run mypy $(project_dir) --strict
 
 # Reformat code
 .PHONY: reformat
@@ -16,53 +7,61 @@ reformat:
 	@poetry run black $(project_dir)
 	@poetry run ruff check $(project_dir) --fix
 
-# Update translations
-.PHONY: i18n
-i18n:
-	poetry run i18n multiple-extract \
-		--input-paths $(bot_dir) \
-		--output-dir $(translations_dir) \
-		-k i18n -k L --locales $(locale) \
-		--create-missing-dirs
+# Lint code
+.PHONY: lint
+lint: reformat
+	@poetry run mypy $(project_dir)
 
 # Make database migration
 .PHONY: migration
 migration:
-	poetry run alembic revision \
+	@poetry run alembic revision \
 	  --autogenerate \
-	  --rev-id $(shell python migrations/_get_next_revision_id.py) \
+	  --rev-id $(shell python migrations/_get_revision_id.py) \
 	  --message $(message)
 
+# Apply database migrations
 .PHONY: migrate
 migrate:
-	poetry run alembic upgrade head
+	@poetry run alembic upgrade head
 
+# Run bot
+.PHONY: run
+run:
+	@poetry run python -O -m aiogram_bot_template
+
+# Build bot image
 .PHONY: app-build
 app-build:
-	docker-compose build
+	@docker-compose build
 
+# Run bot database containers
 .PHONY: app-run-db
 app-run-db:
-	docker compose stop
-	docker compose up -d redis postgres --remove-orphans
+	@docker-compose up -d --remove-orphans postgres redis
 
+# Run bot in docker container
 .PHONY: app-run
 app-run:
-	docker-compose stop
-	docker-compose up -d --remove-orphans
+	@docker-compose stop
+	@docker-compose up -d --remove-orphans
 
+# Stop docker containers
 .PHONY: app-stop
 app-stop:
-	docker-compose stop
+	@docker-compose stop
 
+# Down docker containers
 .PHONY: app-down
 app-down:
-	docker-compose down
+	@docker-compose down
 
+# Destroy docker containers
 .PHONY: app-destroy
 app-destroy:
-	docker-compose down -v --remove-orphans
+	@docker-compose down -v --remove-orphans
 
+# Show bot logs
 .PHONY: app-logs
 app-logs:
-	docker-compose logs -f bot
+	@docker-compose logs -f bot

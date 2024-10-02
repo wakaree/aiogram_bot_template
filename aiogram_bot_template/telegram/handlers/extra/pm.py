@@ -7,20 +7,21 @@ from aiogram.enums import ChatType
 from aiogram.filters import JOIN_TRANSITION, LEAVE_TRANSITION, ChatMemberUpdatedFilter
 from aiogram.types import ChatMemberUpdated
 
+from ....controllers.user import set_bot_blocked
+
 if TYPE_CHECKING:
-    from ....services.database import DBUser, UoW
+    from ....models.sql import User
+    from ....services.sql import UoW
 
 router: Final[Router] = Router(name=__name__)
 router.my_chat_member.filter(F.chat.type == ChatType.PRIVATE)
 
 
 @router.my_chat_member(ChatMemberUpdatedFilter(JOIN_TRANSITION))
-async def enable_notifications(_: ChatMemberUpdated, user: DBUser, uow: UoW) -> Any:
-    user.enable_notifications()
-    await uow.commit(user)
+async def bot_unblocked(_: ChatMemberUpdated, user: User, uow: UoW) -> Any:
+    await set_bot_blocked(user=user, uow=uow, bot_blocked=False)
 
 
 @router.my_chat_member(ChatMemberUpdatedFilter(LEAVE_TRANSITION))
-async def disable_notifications(_: ChatMemberUpdated, user: DBUser, uow: UoW) -> Any:
-    user.disable_notifications()
-    await uow.commit(user)
+async def bot_blocked(_: ChatMemberUpdated, user: User, uow: UoW) -> Any:
+    await set_bot_blocked(user=user, uow=uow, bot_blocked=True)

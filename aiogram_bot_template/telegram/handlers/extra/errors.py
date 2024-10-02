@@ -5,7 +5,7 @@ from aiogram.filters import ExceptionTypeFilter
 from aiogram.types import ErrorEvent
 from aiogram_i18n import I18nContext
 
-from ....exceptions import BotError
+from ....exceptions.base import BotError
 
 router: Final[Router] = Router(name=__name__)
 

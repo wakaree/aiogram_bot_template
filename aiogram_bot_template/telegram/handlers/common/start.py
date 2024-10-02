@@ -8,11 +8,11 @@ from aiogram.types import Message
 from aiogram_i18n import I18nContext
 
 if TYPE_CHECKING:
-    from ....services.database import DBUser
+    from ....models.sql import User
 
 router: Final[Router] = Router(name=__name__)
 
 
 @router.message(CommandStart())
-async def start_command(message: Message, i18n: I18nContext, user: DBUser) -> Any:
+async def start_command(message: Message, i18n: I18nContext, user: User) -> Any:
     return message.answer(text=i18n.messages.start(name=user.mention))

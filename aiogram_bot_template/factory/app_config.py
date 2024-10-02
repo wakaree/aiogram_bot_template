@@ -1,12 +1,18 @@
 from __future__ import annotations
 
-from ..app_config import AppConfig, CommonConfig, PostgresConfig, RedisConfig, WebhookConfig
+from ..models.config.env import (
+    AppConfig,
+    PostgresConfig,
+    RedisConfig,
+    ServerConfig,
+    TelegramConfig,
+)
 
 
 def create_app_config() -> AppConfig:
     return AppConfig(
-        common=CommonConfig(),
+        telegram=TelegramConfig(),
         postgres=PostgresConfig(),
         redis=RedisConfig(),
-        webhook=WebhookConfig(),
+        server=ServerConfig(),
     )

@@ -7,5 +7,3 @@ class Locale(StrEnum):
     EN = auto()
     UK = auto()
     RU = auto()
-
-    DEFAULT = EN

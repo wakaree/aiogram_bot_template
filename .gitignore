@@ -1,8 +1,11 @@
 # Project
 .idea/
 .vscode/
+.code-workspace
+data/*
+
+# Environment
 .venv/
-.tests/
 .env
 venv/
 docker-compose.yml
@@ -18,7 +21,6 @@ __pycache__/
 .coverage/
 
 # Build
-env/
 build/
 _build/
 dist/
