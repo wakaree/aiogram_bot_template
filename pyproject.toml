@@ -30,7 +30,7 @@ mypy = "^1.11.2"
 ruff = "^0.6.8"
 
 [tool.black]
-line_length = 99
+line-length = 99
 exclude = "\\.?venv|\\.?tests"
 
 [tool.ruff]
