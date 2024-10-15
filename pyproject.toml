@@ -11,7 +11,7 @@ readme = "README.md"
 repository = "https://github.com/wakaree/aiogram_bot_template"
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.11,<3.13"  # Excluded 3.13 version due to msgspec incompatibility
 aiogram = "^3.13.1"
 aiogram_i18n = "^1.4"
 aiohttp = "^3.10.8"
