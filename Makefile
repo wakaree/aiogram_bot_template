@@ -28,7 +28,7 @@ migrate:
 # Run bot
 .PHONY: run
 run:
-	@poetry run python -O -m aiogram_bot_template
+	@poetry run python -O -m $(shell poetry version | awk {'print $1'})
 
 # Build bot image
 .PHONY: app-build
