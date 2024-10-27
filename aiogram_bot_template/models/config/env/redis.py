@@ -11,7 +11,7 @@ class RedisConfig(EnvSettings, env_prefix="REDIS_"):
     data: str
 
     def build_url(self) -> str:
-        if self.password:
+        if self.password and self.password.get_secret_value() != 'None':
             return (f"redis://:{self.password.get_secret_value()}@{self.host}:"
                     f"{self.port}/{self.db}")
         else:

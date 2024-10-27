@@ -9,6 +9,14 @@ services:
          - "${REDIS_PORT}"
       volumes:
          - redis-data:${REDIS_DATA}
+      command: |
+         sh -c "
+         if [ -n \"$${REDIS_PASSWORD}\" ] && [ \"$${REDIS_PASSWORD}\" != 'None' ]; then
+            exec redis-server --requirepass \"$${REDIS_PASSWORD}\";
+         else
+            exec redis-server;
+         fi
+         "
 
    postgres:
       image: postgres:16-alpine
