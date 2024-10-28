@@ -28,7 +28,13 @@ migrate:
 # Run bot
 .PHONY: run
 run:
-	@poetry run python -O -m $(shell poetry version | awk {'print $1'})
+	@poetry run python -O -m $(shell poetry version | awk '{print $$1}')
+
+# Initialize .ftl files
+.PHONY: init-ftl
+init-ftl:
+	@chmod +x ./scripts/extract_ftl.sh \
+	&& ./scripts/extract_ftl.sh
 
 # Build bot image
 .PHONY: app-build
@@ -65,3 +71,11 @@ app-destroy:
 .PHONY: app-logs
 app-logs:
 	@docker-compose logs -f bot
+
+# Drop all
+.PHONY: app-drop
+app-drop: app-destroy
+	docker container prune -f
+	docker images -q | xargs docker rmi -f
+	docker volume prune -f
+
