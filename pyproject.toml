@@ -3,9 +3,9 @@ requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
-name = "My Telegram Bot"
+name = "aiogram_bot_template"
 version = "1.0"
-description = ""
+description = "Aiogram 3.x bot template using PostgreSQL (asyncpg) with SQLAlchemy + alembic"
 authors = ["wakaree <nullmatawasoradesu@gmail.com>"]
 readme = "README.md"
 repository = "https://github.com/wakaree/aiogram_bot_template"
@@ -23,6 +23,7 @@ msgspec = "^0.18.6"
 pydantic = "^2.9.2"
 pydantic_settings = "^2.5.2"
 fluent_runtime = "^0.4.0"
+ftl-extract = { git = "https://github.com/andrew000/FTL-Extract.git", rev = "default-ftl-file" }
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.8.0"

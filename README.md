@@ -45,3 +45,5 @@
 - [Alembic](https://alembic.sqlalchemy.org/en/latest/) (lightweight database migration tool)
 - [Redis](https://redis.io/docs/) (in-memory data storage for FSM and caching)
 - [Project Fluent](https://projectfluent.org/) (modern localization system)
+- [FTL-Extract](https://github.com/andrew000/FTL-Extract) (tool for extracting localizable strings
+  from source code files in Fluent format)
