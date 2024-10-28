@@ -23,12 +23,12 @@ msgspec = "^0.18.6"
 pydantic = "^2.9.2"
 pydantic_settings = "^2.5.2"
 fluent_runtime = "^0.4.0"
-ftl-extract = { git = "https://github.com/andrew000/FTL-Extract.git", rev = "default-ftl-file" }
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.8.0"
 mypy = "^1.11.2"
 ruff = "^0.6.8"
+ftl-extract =  "^0.4.4"
 
 [tool.black]
 line-length = 99

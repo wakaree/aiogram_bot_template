@@ -1,5 +1,3 @@
-from typing import List, Union
-
 from pydantic import SecretStr, field_validator
 
 from .base import EnvSettings
@@ -7,7 +5,7 @@ from .base import EnvSettings
 
 class TelegramConfig(EnvSettings, env_prefix="TELEGRAM_"):
     bot_token: SecretStr
-    locales: Union[str, List[str]]
+    locales: str | list[str]
     drop_pending_updates: bool
     use_webhook: bool
     reset_webhook: bool
@@ -15,7 +13,7 @@ class TelegramConfig(EnvSettings, env_prefix="TELEGRAM_"):
     webhook_secret: SecretStr
 
     @field_validator("locales", mode="before")
-    def split_locales(cls, value: Union[str, List[str]]) -> List[str]:
+    def split_locales(cls, value: str | list[str]) -> list[str]:  # noqa: N805
         if isinstance(value, str):
             split_values = [item.strip() for item in value.split(",") if item]
             return split_values
