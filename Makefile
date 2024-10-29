@@ -71,11 +71,3 @@ app-destroy:
 .PHONY: app-logs
 app-logs:
 	@docker-compose logs -f bot
-
-# Drop all
-.PHONY: app-drop
-app-drop: app-destroy
-	docker container prune -f
-	docker images -q | xargs docker rmi -f
-	docker volume prune -f
-
