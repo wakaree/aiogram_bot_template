@@ -6,8 +6,6 @@ from aiogram import Bot, Dispatcher, loggers
 from aiogram.webhook import aiohttp_server as server
 from aiohttp import web
 
-from .utils.logging import MultilineLogger
-
 if TYPE_CHECKING:
     from .models.config import AppConfig
 
@@ -61,5 +59,4 @@ def run_webhook(dispatcher: Dispatcher, bot: Bot, config: AppConfig) -> None:
         app=app,
         host=config.server.host,
         port=config.server.port,
-        print=MultilineLogger(),
     )

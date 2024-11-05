@@ -10,3 +10,6 @@ class UsersRepository(BaseRepository):
 
     async def by_tg_id(self, telegram_id: int) -> Optional[User]:
         return await self._get(User, User.telegram_id == telegram_id)
+
+    async def delete(self, user_id: int) -> bool:
+        return await self._delete(User, User.id == user_id)

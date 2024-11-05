@@ -6,14 +6,14 @@ from aiogram.utils.callback_answer import CallbackAnswerMiddleware
 from aiogram_i18n import I18nMiddleware
 from redis.asyncio import Redis
 
-from ..models.config import AppConfig
-from ..services.redis.repository import RedisRepository
-from ..telegram.handlers import admin, common, extra
-from ..telegram.middlewares.outer import DBSessionMiddleware, UserMiddleware
-from ..utils import mjson
+from ...models.config import AppConfig
+from ...services.redis.repository import RedisRepository
+from ...telegram.handlers import admin, common, extra
+from ...telegram.middlewares.outer import DBSessionMiddleware, UserMiddleware
+from ...utils import mjson
+from ..redis import create_redis
+from ..session_pool import create_session_pool
 from .i18n import create_i18n_middleware
-from .redis import create_redis
-from .session_pool import create_session_pool
 
 
 def create_dispatcher(config: AppConfig) -> Dispatcher:

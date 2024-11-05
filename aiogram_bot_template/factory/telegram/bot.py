@@ -5,13 +5,13 @@ from typing import TYPE_CHECKING
 from aiogram import Bot
 from aiogram.client.default import DefaultBotProperties
 from aiogram.client.session.aiohttp import AiohttpSession
+from aiogram.contrib.middlewares import RetryRequestMiddleware
 from aiogram.enums import ParseMode
 
-from ..telegram.middlewares.request import RetryRequestMiddleware
-from ..utils import mjson
+from aiogram_bot_template.utils import mjson
 
 if TYPE_CHECKING:
-    from ..models.config import AppConfig
+    from aiogram_bot_template.models.config import AppConfig
 
 
 def create_bot(config: AppConfig) -> Bot:

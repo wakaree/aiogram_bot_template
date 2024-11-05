@@ -21,5 +21,6 @@ PROCESSED_LOCALES="${PROCESSED_LOCALES#?}"
 
 # Run the script with processed locales as arguments
 # shellcheck disable=SC2086
-poetry run ftl-extract "$(poetry version | awk '{print $1}')"/ translations/ \
---default-ftl-file messages.ftl $PROCESSED_LOCALES
+poetry run ftl-extract \
+    "$(poetry version | awk '{print $1}')"/ assets/messages \
+    --default-ftl-file messages.ftl $PROCESSED_LOCALES

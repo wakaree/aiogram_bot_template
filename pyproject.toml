@@ -12,23 +12,24 @@ repository = "https://github.com/wakaree/aiogram_bot_template"
 
 [tool.poetry.dependencies]
 python = "^3.11,<3.13"  # Excluded 3.13 version due to msgspec incompatibility
-aiogram = "^3.13.1"
+aiogram = "^3.14.0"
 aiogram_i18n = "^1.4"
 aiohttp = "^3.10.8"
-alembic = "^1.13.3"
+alembic = "^1.14.0"
 asyncpg = "^0.29.0"
 redis = "^5.1.0"
 sqlalchemy = "^2.0.35"
 msgspec = "^0.18.6"
 pydantic = "^2.9.2"
-pydantic_settings = "^2.5.2"
+pydantic_settings = "^2.6.0"
 fluent_runtime = "^0.4.0"
+aiogram-contrib = "^1.0.0"
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.8.0"
 mypy = "^1.11.2"
 ruff = "^0.6.8"
-ftl-extract =  "^0.4.4"
+ftl-extract =  "^0.4.5"
 
 [tool.black]
 line-length = 99
