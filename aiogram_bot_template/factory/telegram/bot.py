@@ -8,10 +8,10 @@ from aiogram.client.session.aiohttp import AiohttpSession
 from aiogram.contrib.middlewares import RetryRequestMiddleware
 from aiogram.enums import ParseMode
 
-from aiogram_bot_template.utils import mjson
+from ...utils import mjson
 
 if TYPE_CHECKING:
-    from aiogram_bot_template.models.config import AppConfig
+    from ...models.config import AppConfig
 
 
 def create_bot(config: AppConfig) -> Bot:

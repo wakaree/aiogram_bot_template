@@ -5,9 +5,9 @@ from typing import cast
 from aiogram_i18n import I18nMiddleware
 from aiogram_i18n.cores import FluentRuntimeCore
 
-from aiogram_bot_template.const import DEFAULT_LOCALE, MESSAGES_SOURCE_DIR
-from aiogram_bot_template.models.config import AppConfig
-from aiogram_bot_template.telegram.middlewares.outer import UserManager
+from ...const import DEFAULT_LOCALE, MESSAGES_SOURCE_DIR
+from ...models.config import AppConfig
+from ...telegram.middlewares.outer import UserManager
 
 
 def create_i18n_core(config: AppConfig) -> FluentRuntimeCore:
