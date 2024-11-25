@@ -1,16 +1,28 @@
 # Project
 .idea/
-.github/
-.*ignore
-README.md
+.vscode/
+.code-workspace
+
+# Environment
+.venv/
+.env
+venv/
+docker-compose.yml
+poetry.lock
 
 # Cache
 __pycache__/
 *.py[cod]
+.cache/
+.ruff_cache/
+.mypy_cache/
+.pytest_cache/
+.coverage/
 
-# Environment
-.env*
-
-# Docker
-docker-compose*.yml
-Dockerfile
+# Build
+build/
+_build/
+dist/
+site/
+*.egg-info/
+*.egg
