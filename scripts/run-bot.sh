@@ -2,5 +2,5 @@
 
 set -e
 
-poetry run alembic upgrade head
-exec poetry run python -O -m "$(poetry version | awk '{print $1}')"
+alembic upgrade head
+exec python -O -m app

@@ -36,6 +36,7 @@ services:
          - postgres
       ports:
          - "${SERVER_PORT}:${SERVER_PORT}"
+      entrypoint: [ "/app/scripts/run-bot.sh" ]
 
 volumes:
    redis-data:

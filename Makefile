@@ -1,73 +1,72 @@
 
 project_dir := .
+package_dir := app
 
-# Reformat code
+.PHONY: help
+help: ## Display this help.
+	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n"} /^[a-zA-Z_0-9-]+:.*?##/ { printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
+
+##@ Formatting & Linting
+
 .PHONY: reformat
-reformat:
-	@poetry run black $(project_dir)
-	@poetry run ruff check $(project_dir) --fix
+reformat: ## Reformat code
+	@uv run ruff format $(project_dir)
+	@uv run ruff check $(project_dir) --fix
 
-# Lint code
 .PHONY: lint
-lint: reformat
-	@poetry run mypy $(project_dir)
+lint: reformat ## Lint code
+	@uv run mypy $(project_dir)
 
-# Make database migration
+##@ Database
+
 .PHONY: migration
-migration:
-	@poetry run alembic revision \
+migration: ## Make database migration
+	@uv run alembic revision \
 	  --autogenerate \
 	  --rev-id $(shell python migrations/_get_revision_id.py) \
 	  --message $(message)
 
-# Apply database migrations
 .PHONY: migrate
-migrate:
-	@poetry run alembic upgrade head
+migrate: ## Apply database migrations
+	@uv run alembic upgrade head
 
-# Run bot
-.PHONY: run
-run:
-	@poetry run python -O -m $(shell poetry version | awk '{print $$1}')
-
-# Initialize .ftl files
-.PHONY: init-ftl
-init-ftl:
-	@chmod +x ./scripts/extract_ftl.sh \
-	&& ./scripts/extract_ftl.sh
-
-# Build bot image
-.PHONY: app-build
-app-build:
-	@docker compose build
-
-# Run bot database containers
 .PHONY: app-run-db
-app-run-db:
+app-run-db: ## Run bot database containers
 	@docker compose up -d --remove-orphans postgres redis
 
-# Run bot in docker container
+##@ App commands
+
+.PHONY: run
+run: ## Run bot
+	@uv run python -O -m $(package_dir)
+
+.PHONY: app-build
+app-build: ## Build bot image
+	@docker compose build
+
 .PHONY: app-run
-app-run:
+app-run: ## Run bot in docker container
 	@docker compose stop
 	@docker compose up -d --remove-orphans
 
-# Stop docker containers
 .PHONY: app-stop
-app-stop:
+app-stop: ## Stop docker containers
 	@docker compose stop
 
-# Down docker containers
 .PHONY: app-down
-app-down:
+app-down: ## Down docker containers
 	@docker compose down
 
-# Destroy docker containers
 .PHONY: app-destroy
-app-destroy:
+app-destroy: ## Destroy docker containers
 	@docker compose down -v --remove-orphans
 
-# Show bot logs
 .PHONY: app-logs
-app-logs:
+app-logs: ## Show bot logs
 	@docker compose logs -f bot
+
+##@ Other
+
+.PHONY: name
+name: ## Get top-level package name
+	@echo $(package_dir)

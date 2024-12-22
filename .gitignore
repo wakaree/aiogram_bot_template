@@ -10,6 +10,8 @@ data/*
 venv/
 docker-compose.yml
 poetry.lock
+uv.lock
+.tests
 
 # Cache
 __pycache__/

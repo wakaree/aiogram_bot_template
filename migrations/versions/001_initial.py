@@ -2,7 +2,7 @@
 
 Revision ID: 001
 Revises:
-Create Date: 2024-10-02 18:38:56.941393
+Create Date: 2024-12-22 22:56:48.242664
 
 """
 
@@ -25,18 +25,19 @@ def upgrade() -> None:
         sa.Column("id", sa.BigInteger(), autoincrement=True, nullable=False),
         sa.Column("telegram_id", sa.BigInteger(), nullable=False),
         sa.Column("name", sa.String(), nullable=False),
-        sa.Column("locale", sa.String(length=2), nullable=False),
-        sa.Column("bot_blocked", sa.Boolean(), nullable=False),
+        sa.Column("language", sa.String(length=2), nullable=False),
+        sa.Column("language_code", sa.String(), nullable=True),
+        sa.Column("blocked_at", sa.DateTime(timezone=True), nullable=True),
         sa.Column(
             "created_at",
             sa.DateTime(timezone=True),
-            server_default=sa.text("now()"),
+            server_default=sa.text("timezone('UTC', now())"),
             nullable=False,
         ),
         sa.Column(
             "updated_at",
             sa.DateTime(timezone=True),
-            server_default=sa.text("now()"),
+            server_default=sa.text("timezone('UTC', now())"),
             nullable=False,
         ),
         sa.PrimaryKeyConstraint("id"),

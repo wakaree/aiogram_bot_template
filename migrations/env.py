@@ -6,9 +6,9 @@ from sqlalchemy import URL, MetaData
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine
 
-from aiogram_bot_template.models.config.env import PostgresConfig
-from aiogram_bot_template.models.sql.base import Base
-from aiogram_bot_template.utils.logging import setup_logger
+from app.models.config.env import PostgresConfig
+from app.models.sql.base import Base
+from app.utils.logging import setup_logger
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -28,10 +28,11 @@ target_metadata: MetaData = Base.metadata
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
 # my_important_option = config.get_main_option("my_important_option")
-# ... etc.
+# ... emake tc.
 
 
 def _get_postgres_dsn() -> URL:
+    # noinspection PyArgumentList
     _config: PostgresConfig = PostgresConfig()
     return _config.build_url()
 
