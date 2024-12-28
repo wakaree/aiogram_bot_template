@@ -29,13 +29,8 @@ repository = "https://github.com/wakaree/aiogram_bot_template"
 dev-dependencies = [
     "mypy~=1.14.0",
     "ruff~=0.8.4",
+    "ftl-extract>=0.5.0",
 ]
-
-[tool.poetry.group.dev.dependencies]
-black = "^24.8.0"
-mypy = "^1.11.2"
-ruff = "^0.6.8"
-ftl-extract =  "^0.4.5"
 
 [tool.black]
 line-length = 99

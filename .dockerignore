@@ -8,7 +8,6 @@
 .env
 venv/
 docker-compose.yml
-poetry.lock
 
 # Cache
 __pycache__/
