@@ -6,7 +6,6 @@ authors = ["wakaree <nullmatawasoradesu@gmail.com>"]
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.11,<3.13"
-repository = "https://github.com/wakaree/aiogram_bot_template"
 dependencies = [
     "aiogram~=3.16.0",
     "aiogram-i18n~=1.4",
@@ -23,7 +22,7 @@ dependencies = [
 ]
 
 [project.urls]
-repository = "https://github.com/wakaree/aiogram_bot_template"
+Repository = "https://github.com/wakaree/aiogram_bot_template.git"
 
 [tool.uv]
 dev-dependencies = [
