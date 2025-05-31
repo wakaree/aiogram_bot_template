@@ -7,12 +7,12 @@ from aiogram.filters import CommandStart
 from aiogram.types import TelegramObject
 from aiogram_i18n import I18nContext
 
-from app.telegram.helpers import MessageHelper
 from app.telegram.keyboards.callback_data.menu import CDDeposit, CDMenu
 from app.telegram.keyboards.common import back_keyboard
 from app.telegram.keyboards.menu import deposit_keyboard
 
 if TYPE_CHECKING:
+    from app.telegram.helpers import MessageHelper
     from app.models.dto.user import UserDto
 
 router: Final[Router] = Router(name=__name__)
