@@ -35,6 +35,7 @@ make migrate
 ## 🚀 Used technologies:
 - [uv](https://docs.astral.sh/uv/) (an extremely fast Python package and project manager)
 - [Aiogram 3.x](https://github.com/aiogram/aiogram) (Telegram bot framework)
+- [FastAPI](https://fastapi.tiangolo.com/) (best python web framework for building APIs)
 - [PostgreSQL](https://www.postgresql.org/) (persistent relational database)
 - [SQLAlchemy](https://docs.sqlalchemy.org/en/20/) (working with database from Python)
 - [Alembic](https://alembic.sqlalchemy.org/en/latest/) (lightweight database migration tool)
