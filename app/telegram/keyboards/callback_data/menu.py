@@ -1,5 +1,9 @@
 from aiogram.filters.callback_data import CallbackData
 
 
-class CDPing(CallbackData, prefix="ping"):
+class CDDeposit(CallbackData, prefix="deposit"):
+    pass
+
+
+class CDMenu(CallbackData, prefix="menu"):
     pass

@@ -5,6 +5,10 @@ from uuid import UUID
 from pydantic import BaseModel
 
 
+def build_key(prefix: str, /, *parts: Any, **kw_parts: Any) -> str:
+    return ":".join([prefix, *map(str, parts), *map(str, kw_parts.values())])
+
+
 class StorageKey(BaseModel):
     if TYPE_CHECKING:
         __separator__: ClassVar[str]

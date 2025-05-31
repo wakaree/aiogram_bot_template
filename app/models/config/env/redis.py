@@ -8,7 +8,6 @@ class RedisConfig(EnvSettings, env_prefix="REDIS_"):
     password: SecretStr
     port: int
     db: int
-    data: str
 
     def build_url(self) -> str:
         return f"redis://:{self.password.get_secret_value()}@{self.host}:{self.port}/{self.db}"

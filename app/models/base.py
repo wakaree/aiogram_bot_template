@@ -8,8 +8,11 @@ class PydanticModel(_BaseModel):
     model_config = ConfigDict(
         extra="ignore",
         from_attributes=True,
+        populate_by_name=True,
     )
 
+
+class ActiveRecordModel(PydanticModel):
     __updated: dict[str, Any] = PrivateAttr(default_factory=dict)
 
     @property

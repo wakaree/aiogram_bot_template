@@ -1,0 +1,2 @@
+class AppError(Exception):
+    pass

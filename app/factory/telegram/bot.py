@@ -7,6 +7,7 @@ from aiogram.client.default import DefaultBotProperties
 from aiogram.client.session.aiohttp import AiohttpSession
 from aiogram.contrib.middlewares import RetryRequestMiddleware
 from aiogram.enums import ParseMode
+from aiogram.types import LinkPreviewOptions
 
 from app.utils import mjson
 
@@ -20,5 +21,8 @@ def create_bot(config: AppConfig) -> Bot:
     return Bot(
         token=config.telegram.bot_token.get_secret_value(),
         session=session,
-        default=DefaultBotProperties(parse_mode=ParseMode.HTML),
+        default=DefaultBotProperties(
+            parse_mode=ParseMode.HTML,
+            link_preview=LinkPreviewOptions(is_disabled=True),
+        ),
     )

@@ -15,7 +15,6 @@ class User(Base, TimestampMixin):
     __tablename__ = "users"
 
     id: Mapped[Int64] = mapped_column(primary_key=True, autoincrement=True)
-    telegram_id: Mapped[Int64] = mapped_column(unique=True)
     name: Mapped[str] = mapped_column()
     language: Mapped[str] = mapped_column(String(length=2))
     language_code: Mapped[Optional[str]] = mapped_column()

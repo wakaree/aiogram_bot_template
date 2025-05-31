@@ -6,7 +6,7 @@ from aiogram.types import TelegramObject
 from aiogram.types import User as AiogramUser
 from aiogram_i18n import I18nMiddleware
 
-from app.services.user import UserService
+from app.services.crud.user import UserService
 from app.telegram.middlewares.event_typed import EventTypedMiddleware
 from app.utils.logging import database as logger
 
@@ -27,13 +27,8 @@ class UserMiddleware(EventTypedMiddleware):
             # when accepting chat_join_request and receiving chat_member updates.
             return await handler(event, data)
 
-        user_service = data["user_service"] = UserService(
-            session_pool=data["session_pool"],
-            redis=data["redis"],
-            config=data["config"],
-        )
-
-        user: Optional[UserDto] = await user_service.by_tg_id(telegram_id=aiogram_user.id)
+        user_service: UserService = data["user_service"]
+        user: Optional[UserDto] = await user_service.get(user_id=aiogram_user.id)
         if user is None:
             i18n: I18nMiddleware = data["i18n_middleware"]
             user = await user_service.create(aiogram_user=aiogram_user, i18n_core=i18n.core)

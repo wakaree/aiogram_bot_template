@@ -8,7 +8,7 @@ from aiogram.filters import JOIN_TRANSITION, LEAVE_TRANSITION, ChatMemberUpdated
 from aiogram.types import ChatMemberUpdated
 
 from app.models.dto.user import UserDto
-from app.services.user import UserService
+from app.services.crud import UserService
 from app.utils.time import datetime_now
 
 router: Final[Router] = Router(name=__name__)

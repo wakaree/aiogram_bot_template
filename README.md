@@ -3,7 +3,7 @@
 [![License](https://img.shields.io/badge/License-MIT-blue)](#license)
 
 ## ⚙️ System dependencies
-- Python 3.11+
+- Python 3.12+
 - Docker
 - docker-compose
 - make
@@ -47,7 +47,7 @@ make migrate
 
 If you want to report a bug or request a new feature, feel free to open a [new issue](https://github.com/wakaree/aiogram_bot_template/issues/new).
 
-### Pull Requests
+### ⬇️ Pull Requests
 
 If you want to help us improve the bot, you can create a new [Pull Request](https://github.com/wakaree/aiogram_bot_template/pulls).
 

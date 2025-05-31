@@ -1,8 +1,6 @@
 from typing import Any, Optional
 
-from fluent.runtime.types import FluentNumber, FluentType, NumberFormatOptions
-
-FluentNumber.default_number_format_options = NumberFormatOptions(useGrouping=False)
+from fluent.runtime.types import FluentType
 
 
 class FluentBool(FluentType):
@@ -18,6 +16,9 @@ class FluentBool(FluentType):
         if isinstance(other, str):
             return self.format() == other
         return False
+
+    def __bool__(self) -> bool:
+        return self.value
 
 
 class FluentNullable(FluentType):

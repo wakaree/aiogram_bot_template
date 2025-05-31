@@ -3,6 +3,7 @@ from __future__ import annotations
 from enum import StrEnum, auto
 
 
+# noinspection PyEnum
 class Locale(StrEnum):
     EN = auto()  # English
     UK = auto()  # Ukrainian
