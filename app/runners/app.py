@@ -49,7 +49,7 @@ def run_polling(dispatcher: Dispatcher, bot: Bot, config: AppConfig) -> None:
 
 
 def run_webhook(dispatcher: Dispatcher, bot: Bot, config: AppConfig) -> None:
-    dispatcher.workflow_data.update(is_polling=True)
+    dispatcher.workflow_data.update(is_polling=False)
     app: FastAPI = FastAPI()
     setup_fastapi(app=app, bot=bot, dispatcher=dispatcher)
     handler: TelegramRequestHandler = TelegramRequestHandler(
