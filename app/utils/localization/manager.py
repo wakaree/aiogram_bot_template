@@ -25,4 +25,4 @@ class UserManager(BaseManager):
         return locale or cast(str, self.default_locale)
 
     async def set_locale(self, locale: str, user: UserDto, user_service: UserService) -> None:
-        await user_service.update(user=user, locale=locale)
+        await user_service.update(user=user, language=locale)
