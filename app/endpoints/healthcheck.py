@@ -14,7 +14,7 @@ async def handle_liveness() -> HealthcheckResponse:
 
 @router.get(path="/readiness")
 async def handle_readiness(request: Request, response: Response) -> HealthcheckResponse:
-    redis: RedisRepository = request.app.state.redis
+    redis: RedisRepository = request.app.state.redis_repository
     response_body: HealthcheckResponse = HealthcheckResponse.ready(service="bot", ready=True)
     if request.app.state.shutdown_completed:
         response_body = HealthcheckResponse.ready(service="bot", ready=False)
