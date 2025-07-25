@@ -12,8 +12,8 @@ from app.telegram.keyboards.common import back_keyboard
 from app.telegram.keyboards.menu import deposit_keyboard
 
 if TYPE_CHECKING:
-    from app.telegram.helpers import MessageHelper
     from app.models.dto.user import UserDto
+    from app.telegram.helpers import MessageHelper
 
 router: Final[Router] = Router(name=__name__)
 

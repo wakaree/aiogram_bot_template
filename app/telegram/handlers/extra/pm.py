@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, Final, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, Final
 
 from aiogram import F, Router
 from aiogram.enums import ChatType

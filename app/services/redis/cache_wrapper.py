@@ -5,6 +5,7 @@ from pydantic import TypeAdapter
 from redis.typing import ExpiryT
 from typing_extensions import TypeVar
 
+from app.services.redis.repository import RedisRepository
 from app.utils import mjson
 
 T = TypeVar("T", bound=Any)
@@ -15,8 +16,6 @@ def redis_cache(
     prefix: Optional[str] = None,
     ttl: Optional[ExpiryT] = None,
 ) -> Callable[[Callable[P, Awaitable[T]]], Callable[P, Awaitable[T]]]:
-    from app.services.redis import RedisRepository
-
     def decorator(func: Callable[P, Awaitable[T]]) -> Callable[P, Awaitable[T]]:
         return_type: Any = get_type_hints(func)["return"]
         type_adapter: TypeAdapter[T] = TypeAdapter(return_type)
