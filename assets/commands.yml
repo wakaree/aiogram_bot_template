@@ -1,8 +1,0 @@
-commands:
-  en:
-    - command: start
-      description: Main menu
-
-  ru:
-    - command: start
-      description: Главное меню

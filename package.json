@@ -1,0 +1,39 @@
+{
+  "name": "task_tracer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "CommonJS",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node src/index.ts",
+    "migrate:up": "node-pg-migrate up --ts-node",
+    "migrate:down": "node-pg-migrate down --ts-node",
+    "migrate:redo": "node-pg-migrate down --ts-node && node-pg-migrate up --ts-node"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/talafarael/task_tracer.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/talafarael/task_tracer/issues"
+  },
+  "homepage": "https://github.com/talafarael/task_tracer#readme",
+  "devDependencies": {
+    "@types/node": "^24.9.1",
+    "node-pg-migrate": "^8.0.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@grammyjs/conversations": "^2.1.0",
+    "@types/pg": "^8.15.5",
+    "dotenv": "^17.2.3",
+    "grammy": "^1.38.3",
+    "pg": "^8.16.3"
+  }
+}
