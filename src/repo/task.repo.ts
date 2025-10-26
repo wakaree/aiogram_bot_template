@@ -1,8 +1,8 @@
 import { query } from "../db/request/query";
 import { CreateTask, Task } from "../models/task.model";
-import { createSheduleTime } from "./sheduled-time.repo";
+import { createSheduleTimeRepo } from "./sheduled-time.repo";
 
-export const createTask = async (data: CreateTask) => {
+export const createTaskRepo = async (data: CreateTask) => {
   try {
     const sqlRequest = `
     INSERT INTO tasks (title, disposable, description)
@@ -15,7 +15,7 @@ export const createTask = async (data: CreateTask) => {
       data.description,
     ]);
     for (const elem of data.scheduledTime) {
-      await createSheduleTime(elem, res[0].id);
+      await createSheduleTimeRepo(elem, res[0].id);
     }
     return res[0];
   } catch (e) { }

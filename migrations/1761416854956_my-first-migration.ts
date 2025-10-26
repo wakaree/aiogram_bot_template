@@ -12,10 +12,23 @@ export const up = (pgm: MigrationBuilder) => {
   ]);
 
   pgm.createTable("users", {
-    id: {
-      type: "uuid",
-      primaryKey: true,
-      default: pgm.func("gen_random_uuid()"),
+    telegram_id: { type: "int", primaryKey: true },
+    username: { type: "text" },
+    first_name: { type: "text" },
+    last_name: { type: "text" },
+    created_at: {
+      type: "timestamp",
+      notNull: true,
+      default: pgm.func("NOW()"),
+    },
+  });
+  pgm.createTable("user_chats", {
+    chat_id: { type: "int", primaryKey: true },
+    user_id: {
+      type: "int",
+      notNull: true,
+      references: "users(telegram_id)",
+      onDelete: "CASCADE",
     },
   });
 
@@ -25,10 +38,10 @@ export const up = (pgm: MigrationBuilder) => {
       primaryKey: true,
       default: pgm.func("gen_random_uuid()"),
     },
-    user_id: {
-      type: "uuid",
+    user_chats_id: {
+      type: "int",
       notNull: true,
-      references: "users",
+      references: "user_chats(chat_id)",
       onDelete: "CASCADE",
     },
     title: { type: "text", notNull: true },
@@ -56,7 +69,8 @@ export const up = (pgm: MigrationBuilder) => {
     time_slots: { type: "text[]", notNull: true },
   });
 
-  pgm.createIndex("tasks", "user_id");
+  pgm.createIndex("user_chats", "user_id");
+  pgm.createIndex("tasks", "user_chats_id");
   pgm.createIndex("scheduled_time", "task_id");
 };
 

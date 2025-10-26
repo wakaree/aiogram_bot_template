@@ -8,9 +8,9 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "dev": "ts-node src/index.ts",
+    "migrate:create": "node-pg-migrate create --ts",
     "migrate:up": "node-pg-migrate up --ts-node",
-    "migrate:down": "node-pg-migrate down --ts-node",
-    "migrate:redo": "node-pg-migrate down --ts-node && node-pg-migrate up --ts-node"
+    "migrate:down": "node-pg-migrate down --ts-node"
   },
   "repository": {
     "type": "git",
