@@ -38,11 +38,10 @@ export const findOneByIdRepo = async (
       COALESCE(
         json_agg(
           json_build_object(
-            'id', uc.id,
             'chat_id', uc.chat_id,
             'user_id', uc.user_id
           )
-        ) FILTER (WHERE uc.id IS NOT NULL),
+        ) FILTER (WHERE uc.chat_id IS NOT NULL),
         '[]'
       ) AS user_chats
     FROM users u

@@ -1,13 +1,14 @@
-import { Context } from "grammy";
-import type { User } from "@grammyjs/types";
 import { sendMessage } from "../helpers/messages";
+import { homeKeyboard } from "../key-board/home-keyboard";
+import { UserContext } from "../type/context";
 
-export const start = async (ctx: Context) => {
-  const user: User | undefined = ctx.from;
-  console.log(user);
+export const start = async (ctx: UserContext) => {
+  // const user = ctx.user;
   if (!ctx.chat?.id) return;
-  await sendMessage(ctx.chat.id.toString(), "hello", [
-    ["« 1", "first"],
-    ["‹ 3", "prev"],
-  ]);
+  const button = await homeKeyboard(ctx);
+  await sendMessage(ctx.chat.id, ctx.t("start"), button);
+};
+
+export const startCreateTaskController = async (ctx: UserContext) => {
+  await ctx.conversation.enter("createTaskConversation");
 };

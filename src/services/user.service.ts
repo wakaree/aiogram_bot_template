@@ -11,9 +11,13 @@ export const getOrCreateUserAndChat = async (
   if (!user) {
     user = await createUser(data);
   }
-  const userChat = user.userChats?.find((elem) => elem.chatId === chatId);
+  if (!user.userChats) {
+    user.userChats = [];
+  }
+  const userChat = user.userChats.find((elem) => elem.chatId === chatId);
+
   if (!userChat) {
-    const newUserChat = await createUserChat(user.telegramId, chatId);
+    const newUserChat = await createUserChat(chatId, user.telegramId);
     user.userChats.push(newUserChat);
   }
   return user;

@@ -5,7 +5,7 @@ import { CreateUserChat, UserChat } from "../models/user-chat.model";
 export const createUserChatRepo = async (data: CreateUserChat) => {
   try {
     const sqlRequest = `
-      INSERT INTO users (chat_id, user_id)
+      INSERT INTO user_chats (chat_id, user_id)
       VALUES ($1, $2)
       RETURNING *;
     `;

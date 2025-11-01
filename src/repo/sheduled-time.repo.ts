@@ -5,7 +5,7 @@ import {
   ScheduledTime,
 } from "../models/scheduled-time.model";
 
-export const createSheduleTime = async (
+export const createSheduleTimeRepo = async (
   data: CreateScheduledTime,
   taskId: string,
 ): Promise<ScheduledTime> => {

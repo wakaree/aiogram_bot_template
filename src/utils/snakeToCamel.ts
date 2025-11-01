@@ -10,7 +10,13 @@ export const snakeToCamel = <T extends Record<string, any>>(
       letter.toUpperCase(),
     );
     const value = obj[key];
-    if (
+    if (Array.isArray(value)) {
+      const arr = [];
+      for (const val of value) {
+        arr.push(snakeToCamel(val));
+      }
+      newObj[camelKey] = arr;
+    } else if (
       value &&
       typeof value === "object" &&
       !Array.isArray(value) &&

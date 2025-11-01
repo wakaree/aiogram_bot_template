@@ -1,6 +1,4 @@
-import { MigrationBuilder } from "node-pg-migrate";
-
-export const up = (pgm: MigrationBuilder) => {
+exports.up = (pgm) => {
   pgm.createType("day_enum", [
     "Monday",
     "Tuesday",
@@ -74,7 +72,7 @@ export const up = (pgm: MigrationBuilder) => {
   pgm.createIndex("scheduled_time", "task_id");
 };
 
-export const down = (pgm: MigrationBuilder) => {
+exports.down = (pgm) => {
   pgm.dropTable("scheduled_time");
   pgm.dropTable("tasks");
   pgm.dropTable("users");

@@ -19,5 +19,6 @@ export const userMiddleware = async (
 
   const user = await getOrCreateUserAndChat(telegramUser, chatId);
   ctx.user = user;
-  next();
+ 
+  await next();
 };

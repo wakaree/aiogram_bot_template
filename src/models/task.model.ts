@@ -1,4 +1,5 @@
 import { CreateScheduledTime, ScheduledTime } from "./scheduled-time.model";
+
 export interface TaskBase {
   title: string;
   description?: string;
