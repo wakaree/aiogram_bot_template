@@ -28,8 +28,8 @@ export const intiBot = () => {
     }),
   );
   bot.use(i18n);
-  bot.use(i18n).use(conversations());
-  bot.use(i18n).use(createConversation(createTaskConversation));
+  bot.use(conversations());
+  bot.use(createConversation(createTaskConversation));
   bot.use(userMiddleware).use(router);
   bot
     .start({

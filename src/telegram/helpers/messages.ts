@@ -10,12 +10,12 @@ export const factorySend = async (
   ) => Promise<Message.TextMessage>,
   message: string,
   keyboard: string[][] = [],
-) => {
+): Promise<Message.TextMessage> => {
   const buttonRow = keyboard.map(([label, data]) =>
     InlineKeyboard.text(label, data),
   );
   const keyboards = InlineKeyboard.from([buttonRow]);
-  await handlerSend(message, keyboards);
+  return await handlerSend(message, keyboards);
 };
 export const sendMessage = async (
   id: number,
@@ -62,7 +62,7 @@ export const sendReply = async (
   ctx: BotContext,
   message: string,
   keyboard: string[][] = [],
-) => {
+): Promise<Message.TextMessage> => {
   const handler = async (
     message: string,
     keyboard: InlineKeyboard,
@@ -71,5 +71,5 @@ export const sendReply = async (
       reply_markup: keyboard,
     });
   };
-  await factorySend(handler, message, keyboard);
+  return await factorySend(handler, message, keyboard);
 };

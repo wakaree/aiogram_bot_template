@@ -1,4 +1,4 @@
-import { configVerify } from "../utils/confif-verify";
+import { configVerify } from "../utils/config-verify";
 
 export const dbConfig = {
   user: configVerify("POSTGRES_USER"),

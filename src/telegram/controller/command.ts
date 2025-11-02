@@ -10,5 +10,11 @@ export const start = async (ctx: UserContext) => {
 };
 
 export const startCreateTaskController = async (ctx: UserContext) => {
-  await ctx.conversation.enter("createTaskConversation");
+  try {
+    const createTask = await ctx.conversation.enter("createTaskConversation");
+    console.log("adf");
+    console.log(createTask);
+  } catch (err) {
+    console.error("❌ Error in startCreateTaskController:", err);
+  }
 };

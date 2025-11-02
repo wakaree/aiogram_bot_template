@@ -1,24 +1,24 @@
+import { CreateTask } from "../../models/task.model";
 import { i18n } from "../bot";
-import { sendReply } from "../helpers/messages";
 import {
-  regularChooseKeyboard,
-  dayChooseKeyboard,
-} from "../key-board/create-task-keyboard";
+  handlerGetCallbackQueryMessage,
+  handlerGetTextMessage,
+} from "../helpers/conversation";
+import { sendReply } from "../helpers/messages";
+import { regularChooseKeyboard } from "../key-board/create-task-keyboard";
 import { BotContext } from "../type/context";
 import { MyConversation } from "../type/conversation";
-import { scheduledTime } from "./scheduled-time";
+import { scheduledTimesConversation } from "./scheduled-time";
 
 export const createTaskConversation = async (
   conversation: MyConversation,
   ctx: BotContext,
-): Promise<void> => {
+): Promise<CreateTask> => {
   const locale = await conversation.external(
     () => ctx.session?.__language_code || "en",
   );
-
-  await ctx.reply(i18n.t(locale, "startCreateTask"));
-  const msgTitle = await conversation.waitFor("message:text");
-  const title = msgTitle.message.text;
+  await sendReply(ctx, i18n.t(locale, "startCreateTask"));
+  const { title } = await handlerGetTextMessage(conversation);
   await ctx.reply(i18n.t(locale, "enterDescriptionTaskTitle", { title }), {
     parse_mode: "Markdown",
   });
@@ -35,12 +35,22 @@ export const createTaskConversation = async (
     }),
     regularButton,
   );
-  const actionRegular = await conversation.waitFor("callback_query:data");
-  const choiceReguular = actionRegular.callbackQuery.data;
-  const messageId = actionRegular.callbackQuery.message?.message_id ?? 0;
-  await actionRegular.answerCallbackQuery();
+  const { messageId, choice: choiceReguular } =
+    await handlerGetCallbackQueryMessage(conversation);
 
   const disposable =
     choiceReguular === "regularButtonChooseAction" ? true : false;
-  await scheduledTime(conversation, actionRegular, messageId);
+  const time = await scheduledTimesConversation(conversation, ctx, messageId);
+  console.log("✅ reached before return", {
+    title,
+    description,
+    disposable,
+    time,
+  });
+  return {
+    title,
+    description,
+    disposable,
+    scheduledTime: time,
+  };
 };

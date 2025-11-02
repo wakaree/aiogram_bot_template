@@ -6,4 +6,5 @@ export enum DayKeyboardEnum {
   Friday = "createTaskFridayButtonChooseAction",
   Saturday = "createTaskSaturdayButtonChooseAction",
   Sunday = "createTaskSundayButtonChooseAction",
+  createTaskTime = "createTaskTime",
 }

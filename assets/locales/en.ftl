@@ -27,6 +27,12 @@ chooseTime =
 
     🏷️ *Day:* { $day }
 
+scheduledTimes =
+    Please enter a time for your repetitions: 
+
+    🏷️ *Day:* { $day }
+    🏷️ *Times:* { $times } 
+
 # button 
 startButtonChooseAction = Create task
 watchButtonChooseAction = Watch tasks
@@ -37,12 +43,13 @@ regularButtonChooseAction = Constantly
 oneTimeButtonChooseAction = One time
 
 # button chooseDay
-
-createTaskMondayButtonChooseAction = Monday,
-createTaskTuesdayButtonChooseAction = Tuesday,
-createTaskWednesdayButtonChooseAction = Wednesday,
-createTaskThursdayButtonChooseAction = Thursday,
-createTaskFridayButtonChooseAction = Friday,
-createTaskSaturdayButtonChooseAction = Saturday,
-createTaskSundayButtonChooseAction = Sunday,
+createTaskTime = Create  
+createTaskMondayButtonChooseAction = Monday 
+createTaskMondayButtonChooseAction = Monday
+createTaskTuesdayButtonChooseAction = Tuesday
+createTaskWednesdayButtonChooseAction = Wednesday
+createTaskThursdayButtonChooseAction = Thursday
+createTaskFridayButtonChooseAction = Friday
+createTaskSaturdayButtonChooseAction = Saturday
+createTaskSundayButtonChooseAction = Sunday
 

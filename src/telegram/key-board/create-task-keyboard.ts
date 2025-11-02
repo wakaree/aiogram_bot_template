@@ -40,3 +40,9 @@ export const dayChooseKeyboard = async (
     ],
   ];
 };
+export const dayAddKeyboard = async (
+  CtxT: (name: string) => string,
+): Promise<string[][]> => {
+  const buttonChooseAction = await dayChooseKeyboard(CtxT);
+  return [[CtxT("createTaskTime"), "createTaskTime"], ...buttonChooseAction];
+};

@@ -4,6 +4,6 @@ export interface CreateScheduledTime {
   day: Day;
   timeSlots: string[];
 }
-export interface ScheduledTime {
+export interface ScheduledTime extends CreateScheduledTime {
   id: string;
 }
