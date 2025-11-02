@@ -1,4 +1,5 @@
 import { CreateTask } from "../../models/task.model";
+import { createTaskService } from "../../services/task.service";
 import { i18n } from "../bot";
 import {
   handlerGetCallbackQueryMessage,
@@ -8,6 +9,7 @@ import { sendReply } from "../helpers/messages";
 import { regularChooseKeyboard } from "../key-board/create-task-keyboard";
 import { BotContext } from "../type/context";
 import { MyConversation } from "../type/conversation";
+import { formatTaskSchedule } from "../utils/formater-scheduled";
 import { scheduledTimesConversation } from "./scheduled-time";
 
 export const createTaskConversation = async (
@@ -41,16 +43,26 @@ export const createTaskConversation = async (
   const disposable =
     choiceReguular === "regularButtonChooseAction" ? true : false;
   const time = await scheduledTimesConversation(conversation, ctx, messageId);
-  console.log("✅ reached before return", {
-    title,
-    description,
-    disposable,
-    time,
-  });
-  return {
+
+  const newTask = {
     title,
     description,
     disposable,
     scheduledTime: time,
   };
+  await ctx.reply("sta");
+  await conversation.external(async (ctx) => {
+    // ctx.session.createTaskData = newTask;
+    const task = await createTaskService(newTask, ctx.chat?.id ?? 0);
+    const schedule = formatTaskSchedule(task);
+    console.log("suk");
+    await ctx.reply(
+      i18n.t(locale, "createdTask", {
+        title: task.title,
+        disposable: task.disposable.toString(),
+        schedule,
+      }),
+    );
+  });
+  return newTask;
 };

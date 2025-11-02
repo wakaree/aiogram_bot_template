@@ -10,7 +10,7 @@ export const createSheduleTimeRepo = async (
   taskId: string,
 ): Promise<ScheduledTime> => {
   const sqlRequest = `
-    INSERT INTO tasks (day, time_slots, task_id)
+    INSERT INTO scheduled_time (day, time_slots, task_id)
     VALUES ($1, $2, $3)
     RETURNING *;
   `;
@@ -23,4 +23,15 @@ export const createSheduleTimeRepo = async (
     throw new ValidationError("Failed to create scheduled time");
   }
   return res[0];
+};
+export const createSheduleTimesRepo = async (
+  scheduledTime: CreateScheduledTime[],
+  taskId: string,
+): Promise<ScheduledTime[]> => {
+  const newScheduledTimes: ScheduledTime[] = [];
+  for (const elem of scheduledTime) {
+    const newScheduledTime = await createSheduleTimeRepo(elem, taskId);
+    newScheduledTimes.push(newScheduledTime);
+  }
+  return newScheduledTimes;
 };

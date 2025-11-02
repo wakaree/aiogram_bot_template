@@ -33,6 +33,15 @@ scheduledTimes =
     🏷️ *Day:* { $day }
     🏷️ *Times:* { $times } 
 
+createdTask = ✅ Task “{ $title }” has been successfully created!
+  { $disposable ->
+      [true] ♻️ This is a one-time task.
+      [false] 🔁 This is a recurring task.
+     *[other]
+  }
+  📅 Schedule:
+  { $schedule }
+
 # button 
 startButtonChooseAction = Create task
 watchButtonChooseAction = Watch tasks

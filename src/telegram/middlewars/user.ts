@@ -1,4 +1,4 @@
-import { Context, NextFunction } from "grammy";
+import { NextFunction } from "grammy";
 import { getOrCreateUserAndChat } from "../../services/user.service";
 import { ValidationError } from "../../errors/validation-errors";
 import { UserContext } from "../type/context";
@@ -19,6 +19,6 @@ export const userMiddleware = async (
 
   const user = await getOrCreateUserAndChat(telegramUser, chatId);
   ctx.user = user;
- 
+
   await next();
 };

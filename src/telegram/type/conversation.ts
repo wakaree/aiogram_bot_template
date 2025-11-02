@@ -1,7 +1,7 @@
 import { Conversation, ConversationFlavor } from "@grammyjs/conversations";
-import { BotContext } from "./context";
+import { UserContext } from "./context";
 
 export type MyConversation = Conversation<
-  ConversationFlavor<BotContext>,
-  BotContext
+  ConversationFlavor<UserContext>,
+  UserContext
 >;

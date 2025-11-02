@@ -9,5 +9,4 @@ export const createUserChat = async (chatId: number, userId: number) => {
   const userChat = await createUserChatRepo(userChatData);
   return userChat;
 };
-
 export const findOneByIdUserChat = async (chatId: string) => { };

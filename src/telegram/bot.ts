@@ -28,9 +28,10 @@ export const intiBot = () => {
     }),
   );
   bot.use(i18n);
+  bot.use(userMiddleware);
   bot.use(conversations());
   bot.use(createConversation(createTaskConversation));
-  bot.use(userMiddleware).use(router);
+  bot.use(router);
   bot
     .start({
       onStart: () => console.log("Bot connected"),
