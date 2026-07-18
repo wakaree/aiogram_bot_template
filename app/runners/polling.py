@@ -1,29 +1,23 @@
 from __future__ import annotations
 
-import asyncio
 from contextlib import asynccontextmanager
-from typing import TYPE_CHECKING, AsyncGenerator
+from typing import AsyncGenerator
 
-from aiogram import Bot, Dispatcher, loggers
+from aiogram import Dispatcher
+from dishka import AsyncContainer
 from fastapi import FastAPI
 
-if TYPE_CHECKING:
-    from app.models.config import AppConfig
+from app.infrastructure.lifespan import LifespanService
 
 
-async def polling_startup(bots: list[Bot], config: AppConfig) -> None:
-    for bot in bots:
-        await bot.delete_webhook(drop_pending_updates=config.telegram.drop_pending_updates)
-    if config.telegram.drop_pending_updates:
-        loggers.dispatcher.info("Updates skipped successfully")
-
-
-# noinspection PyProtectedMember
 @asynccontextmanager
 async def polling_lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
+    container: AsyncContainer = app.state.dishka_container
     dispatcher: Dispatcher = app.state.dispatcher
-    bot: Bot = app.state.bot
-    asyncio.create_task(dispatcher.start_polling(bot, handle_signals=False))
+    lifespan: LifespanService = await container.get(LifespanService)
+
+    await lifespan.setup_polling(dispatcher=dispatcher)
+    await lifespan.setup_commands()
     yield
-    if dispatcher._running_lock.locked():
-        await dispatcher.stop_polling()
+    await lifespan.stop_polling(dispatcher=dispatcher)
+    await container.close()

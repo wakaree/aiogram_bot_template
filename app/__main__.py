@@ -1,20 +1,27 @@
-from aiogram import Bot, Dispatcher
+from contextlib import suppress
 
-from app.factory import create_app_config, create_bot, create_dispatcher
-from app.models.config import AppConfig
+from aiogram import Dispatcher
+from dishka import AsyncContainer
+
+from app.application.models.config import AppConfig
+from app.providers.container import create_container
+from app.providers.telegram.dispatcher import create_dispatcher
 from app.runners.app import run_polling, run_webhook
 from app.utils.logging import setup_logger
 
 
-def main() -> None:
+async def main() -> None:
+    container: AsyncContainer = create_container()
+    config: AppConfig = await container.get(AppConfig)
     setup_logger()
-    config: AppConfig = create_app_config()
-    bot: Bot = create_bot(config=config)
-    dispatcher: Dispatcher = create_dispatcher(config=config)
+    dispatcher: Dispatcher = await create_dispatcher(container=container)
     if config.telegram.use_webhook:
-        return run_webhook(dispatcher=dispatcher, bot=bot, config=config)
-    return run_polling(dispatcher=dispatcher, bot=bot, config=config)
+        return await run_webhook(dispatcher=dispatcher, container=container)
+    return await run_polling(dispatcher=dispatcher, container=container)
 
 
 if __name__ == "__main__":
-    main()
+    import asyncio
+
+    with suppress(KeyboardInterrupt):
+        asyncio.run(main())

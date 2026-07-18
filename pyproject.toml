@@ -13,6 +13,7 @@ dependencies = [
     "aiohttp~=3.11.18",
     "alembic~=1.14.1",
     "asyncpg~=0.30.0",
+    "dishka>=1.8.0",
     "fastapi>=0.115.12",
     "fluent-runtime~=0.4.0",
     "greenlet>=3.2.2",

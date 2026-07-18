@@ -3,21 +3,20 @@ from __future__ import annotations
 import asyncio
 import signal
 from functools import partial
-from typing import TYPE_CHECKING, Any
+from typing import Any
 
 import uvicorn
 from aiogram import Bot, Dispatcher
+from dishka import AsyncContainer
 from fastapi import FastAPI
 from uvicorn import server
 
-from app.endpoints.telegram import TelegramRequestHandler
-from app.factory.telegram import setup_fastapi
+from app.application.models.config import AppConfig
+from app.presentation.fastapi.telegram import TelegramRequestHandler
+from app.providers.telegram.fastapi import setup_fastapi
 from app.runners.lifespan import emit_aiogram_shutdown
-from app.runners.polling import polling_lifespan, polling_startup
-from app.runners.webhook import webhook_shutdown, webhook_startup
-
-if TYPE_CHECKING:
-    from app.models.config import AppConfig
+from app.runners.polling import polling_lifespan
+from app.runners.webhook import webhook_lifespan
 
 
 # noinspection PyProtectedMember
@@ -29,29 +28,32 @@ def handle_sigterm(*_: Any, app: FastAPI) -> None:
         asyncio.create_task(emit_aiogram_shutdown(app=app))
 
 
-def run_app(app: FastAPI, config: AppConfig) -> None:
+async def run_app(app: FastAPI, dispatcher: Dispatcher, container: AsyncContainer) -> None:
+    setup_fastapi(app=app, dispatcher=dispatcher, container=container)
+    config: AppConfig = await container.get(AppConfig)
     server.HANDLED_SIGNALS = (signal.SIGINT,)  # type: ignore
     signal.signal(signal.SIGTERM, partial(handle_sigterm, app=app))
-    return uvicorn.run(
+    uvicorn_config = uvicorn.Config(
         app=app,
         host=config.server.host,
         port=config.server.port,
         access_log=False,
     )
+    uvicorn_server = uvicorn.Server(config=uvicorn_config)
+    return await uvicorn_server.serve()
 
 
-def run_polling(dispatcher: Dispatcher, bot: Bot, config: AppConfig) -> None:
-    dispatcher.workflow_data.update(is_polling=True)
+async def run_polling(dispatcher: Dispatcher, container: AsyncContainer) -> None:
     app: FastAPI = FastAPI(lifespan=polling_lifespan)
-    setup_fastapi(app=app, bot=bot, dispatcher=dispatcher)
-    dispatcher.startup.register(polling_startup)
-    return run_app(app=app, config=config)
+    app.state.is_polling = True
+    return await run_app(app=app, dispatcher=dispatcher, container=container)
 
 
-def run_webhook(dispatcher: Dispatcher, bot: Bot, config: AppConfig) -> None:
-    dispatcher.workflow_data.update(is_polling=False)
-    app: FastAPI = FastAPI()
-    setup_fastapi(app=app, bot=bot, dispatcher=dispatcher)
+async def run_webhook(dispatcher: Dispatcher, container: AsyncContainer) -> None:
+    app: FastAPI = FastAPI(lifespan=webhook_lifespan)
+    app.state.is_polling = False
+    config: AppConfig = await container.get(AppConfig)
+    bot: Bot = await container.get(Bot)
     handler: TelegramRequestHandler = TelegramRequestHandler(
         dispatcher=dispatcher,
         bot=bot,
@@ -60,7 +62,5 @@ def run_webhook(dispatcher: Dispatcher, bot: Bot, config: AppConfig) -> None:
     )
     app.state.tg_webhook_handler = handler
     app.include_router(handler.router)
-    dispatcher.startup.register(webhook_startup)
-    dispatcher.shutdown.register(webhook_shutdown)
     dispatcher.workflow_data.update(app=app)
-    return run_app(app=app, config=config)
+    return await run_app(app=app, dispatcher=dispatcher, container=container)

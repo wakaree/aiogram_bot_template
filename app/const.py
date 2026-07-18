@@ -2,7 +2,7 @@ from datetime import timezone
 from pathlib import Path
 from typing import Final
 
-from app.enums.locale import Locale
+from app.domain.enums.locale import Locale
 
 TIMEZONE: Final[timezone] = timezone.utc
 DEFAULT_LOCALE: Final[str] = Locale.EN
