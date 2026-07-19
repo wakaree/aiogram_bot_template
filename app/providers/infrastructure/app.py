@@ -9,7 +9,7 @@ from app.application.models.config.env import (
     SQLAlchemyConfig,
     TelegramConfig,
 )
-from app.infrastructure.lifespan import LifespanService
+from app.infrastructure.telegram.lifespan import LifespanService
 
 
 def create_app_config() -> AppConfig:

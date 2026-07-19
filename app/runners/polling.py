@@ -7,7 +7,7 @@ from aiogram import Dispatcher
 from dishka import AsyncContainer
 from fastapi import FastAPI
 
-from app.infrastructure.lifespan import LifespanService
+from app.infrastructure.telegram.lifespan import LifespanService
 
 
 @asynccontextmanager

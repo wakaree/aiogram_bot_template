@@ -65,7 +65,7 @@ app/
 │   ├── postgres/          # UoW, SqlRepositoryHelper[T], repositories
 │   ├── redis/                # cache service + key-value repository
 │   ├── localization/           # aiogram-i18n manager, Fluent helpers/patches
-│   └── lifespan.py               # polling/webhook/commands setup, owned by LifespanService
+│   └── telegram/                  # LifespanService — polling/webhook/commands setup
 ├── presentation/       # Everything that talks to Telegram / HTTP
 │   ├── telegram/
 │   │   ├── handlers/      # thin routers — one call into a Flow per handler
